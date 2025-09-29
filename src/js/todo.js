@@ -14,6 +14,7 @@ const Priority = Object.freeze({
  * @param {string} notes - any additional notes for the todo
  */
 export default class ToDo {
+	#id;
 	#title;
 	#description;
 	#dueDate;
@@ -27,6 +28,8 @@ export default class ToDo {
 				"incorrect input passed to priority, should be one of 'high', 'medium', 'low', ''"
 			);
 		}
+
+		this.#id = crypto.randomUUID();
 		this.#title = title;
 		this.#description = description;
 		this.#dueDate = dueDate;
@@ -90,6 +93,7 @@ export default class ToDo {
 	/** Creates an object that is a copy of all properties including private for reading */
 	read() {
 		return {
+			id: this.#id,
 			title: this.#title,
 			description: this.#description,
 			dueDate: this.#dueDate,
