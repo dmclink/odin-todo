@@ -1,8 +1,8 @@
-export { setupWebpack } from '/setup/webpack.js';
-export { installDependencies } from '/setup/packagemanager.js';
-export { updatePackageProperty } from './setup/packagejson.js';
+export { setupWebpack } from './webpack.js';
+export { installDependencies } from './packagemanager.js';
+export { updatePackageProperty } from './packagejson.js';
 export {
 	removeFromGitTracking,
 	deleteFilesAndDirs,
 	getProjectName,
-} from '/setup/files.js';
+} from './files.js';
