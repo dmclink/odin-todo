@@ -2,9 +2,9 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-function removeFromGitTracking(fileName, options) {
+function removeFromGitTracking(fileName) {
 	let recursiveFlag = '';
-	if (options.isDir) {
+	if (fs.lstatSync(fileName).isDirectory()) {
 		recursiveFlag = '-r ';
 	}
 
