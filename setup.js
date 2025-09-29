@@ -9,7 +9,7 @@ import {
 	updatePackageProperty,
 	installDependencies,
 	setupWebpack,
-} from '/setup/index.js';
+} from './setup/index.js';
 
 const fileName = fileURLToPath(import.meta.url);
 const thisFile = path.basename(fileName);
