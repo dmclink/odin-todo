@@ -1,10 +1,14 @@
 import ToDo from ('./todo.js')
 
-class Project {
+export default class Project {
+  #name;
   #todos;
+  #id;
 
-  constructor() {
+  constructor(name) {
+    this.#name = name;
     this.#todos = [];
+    this.#id = crypto.randomUUID();
   }
 
   /** Adds new todo to this project's list
@@ -29,5 +33,9 @@ class Project {
     }
 
     this.#todos.splice(idx, 1);
+  }
+
+  get id() {
+    return this.#id;
   }
 }
