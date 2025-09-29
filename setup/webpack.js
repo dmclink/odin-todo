@@ -15,10 +15,15 @@ const htmlTemplatePath = './src/html/template.html';
 const cssTemplatePath = './src/css/style.css';
 
 const webpackCommonData = `
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default {
 	entry: './src/js/index.js',
 	output: {
 		filename: 'main.js',
@@ -50,23 +55,24 @@ module.exports = {
 `;
 
 const webpackDevData = `
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common');
+import { merge } from 'webpack-merge';
+import common from './webpack.common.js';
 
-module.exports = merge(common, {
+export default merge(common, {
 	mode: 'development',
 	devtool: 'inline-source-map',
 	devServer: {
 		static: './dist',
+		watchFiles: ['./src/html/template.html'],
 	},
 });
 `;
 
 const webpackProdData = `
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common');
+import { merge } from 'webpack-merge';
+import common from './webpack.common.js';
 
-module.exports = merge(common, {
+export default merge(common, {
 	mode: 'production',
 	devtool: 'source-map',
 });
