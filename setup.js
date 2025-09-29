@@ -15,7 +15,7 @@ const fileName = fileURLToPath(import.meta.url);
 const thisFile = path.basename(fileName);
 const setupDir = './setup/';
 
-function main() {
+async function main() {
 	const projectName = getProjectName();
 
 	// update package.json with current repo name
@@ -29,7 +29,7 @@ function main() {
 	console.log('README.md has been reset.');
 
 	// ask and set up webpack
-	setupWebpack();
+	await setupWebpack();
 
 	// remove setup.js (thisFile) and directory ./setup/ (setupDir) from Git tracking
 	removeFromGitTracking(thisFile);
@@ -39,4 +39,4 @@ function main() {
 	deleteFilesAndDirs(thisFile, setupDir);
 }
 
-main();
+await main();

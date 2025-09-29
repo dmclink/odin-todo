@@ -109,7 +109,7 @@ async function wantsWebpack() {
 	return result;
 }
 
-export async function setupWebpack() {
+async function setupWebpack() {
 	if (!(await wantsWebpack())) {
 		console.log('skipping webpack installation');
 		return;
@@ -180,3 +180,5 @@ export async function setupWebpack() {
 		'webpack --config webpack.prod.js'
 	);
 }
+
+export { setupWebpack };
