@@ -6,13 +6,13 @@ import { updatePackageObjectProperty } from './packagejson.js';
 import { getPackageManager, installDependencies } from './packagemanager.js';
 
 const utf8 = 'utf8';
-const webpackCommonPath = '../webpack.common.js';
-const webpackProdPath = '../webpack.prod.js';
-const webpackDevPath = '../webpack.dev.js';
-const htmlDirPath = '../src/html';
-const cssDirPath = '../src/css';
-const htmlTemplatePath = '../src/html/template.html';
-const cssTemplatePath = '../src/css/style.css';
+const webpackCommonPath = './webpack.common.js';
+const webpackProdPath = './webpack.prod.js';
+const webpackDevPath = './webpack.dev.js';
+const htmlDirPath = './src/html';
+const cssDirPath = './src/css';
+const htmlTemplatePath = './src/html/template.html';
+const cssTemplatePath = './src/css/style.css';
 
 const webpackCommonData = `
 const path = require('path');
