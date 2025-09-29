@@ -88,10 +88,4 @@ function deleteFilesAndDirs(...paths) {
 	}
 }
 
-export {
-	removeFromGitTracking,
-	updatePackageProperty,
-	updatePackageObjectProperty,
-	getProjectName,
-	deleteFilesAndDirs,
-};
+export { removeFromGitTracking, getProjectName, deleteFilesAndDirs };
