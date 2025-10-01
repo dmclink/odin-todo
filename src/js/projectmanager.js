@@ -1,13 +1,13 @@
 import Project from './project.js';
 
-class ProjectManager {
+export default class ProjectManager {
 	#projects;
 	#defaultProject;
 
 	constructor() {
 		const defaultName = 'default';
 		const newDefaultProject = new Project(defaultName);
-		const newDefaultId = newDefaultProject.id();
+		const newDefaultId = newDefaultProject.id;
 		this.#defaultProject = newDefaultProject;
 		this.#projects = new Map();
 
@@ -16,7 +16,7 @@ class ProjectManager {
 
 	add(name) {
 		const newProject = new Project(name);
-		const newId = newProject.id();
+		const newId = newProject.id;
 
 		this.#projects.set(newId, newProject);
 	}
@@ -41,6 +41,15 @@ class ProjectManager {
 		}
 
 		return this.#projects.get(projectId);
+	}
+
+	getProjects() {
+		const result = {};
+		for (const [key, val] of this.#projects.entries()) {
+			result[key] = val;
+		}
+
+		return result;
 	}
 
 	/** Sets default project to the project stored at projectId. Throws error if none exist.
