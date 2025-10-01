@@ -28,4 +28,30 @@ class ProjectManager {
 
 		this.#projects.delete(id);
 	}
+
+	/** Returns project with inputted id. If no project exists or no projectId is inputted,
+	 * returns the default project.
+	 *
+	 * @param {string|undefined} projectId - the project id to search
+	 * @returns
+	 */
+	getProject(projectId = '') {
+		if (!projectId || !this.#projects.has(projectId)) {
+			return this.#defaultProject;
+		}
+
+		return this.#projects.get(projectId);
+	}
+
+	/** Sets default project to the project stored at projectId. Throws error if none exist.
+	 *
+	 * @param {string} projectId - the project id of the new default project
+	 */
+	setDefaultProject(projectId) {
+		if (!projectId || !this.#projects.has(projectId)) {
+			throw new Error(`no project at ${projectId} exists`);
+		}
+
+		this.#defaultProject = this.#projects.get(projectId);
+	}
 }
