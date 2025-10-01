@@ -38,4 +38,8 @@ export default class Project {
   get id() {
     return this.#id;
   }
+
+  getTodos() {
+    return [...this.#todos];
+  }
 }
