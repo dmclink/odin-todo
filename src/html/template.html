@@ -7,8 +7,66 @@
   <title>Document</title>
 </head>
 
-<body>
-  <p>hello world</p>
+<body class="body" id="body">
+  <aside class="projects">
+    <div class="projects__header-block">
+      <h1 class="projects__title">
+        Projects
+      </h1>
+    </div>
+    <ul class="projects__list">
+      <li class="projects__li">
+        <img src="../img/folder-icon.svg" class="projects__icon">
+        <button class="projects__btn">All Projects</button>
+        <!-- count will be populated and updated via js TODO: remove placeholder count in production -->
+        <span class="projects__todo-count">24</span>
+      </li>
+      <!-- individual project buttons will be generated via js-->
+    </ul>
+  </aside>
+  <header class="header">
+    <div class="header__info">
+      <h1 class="header__title">All Todos</h1>
+      <!-- count will be populated and updated via js TODO: remove placeholder count in production -->
+      <p class="header__todo-count">24 todos</p>
+    </div>
+
+    <div class="header__controls">
+      <button class="header__dark-toggle" id="header__dark-toggle">
+        <!-- TODO: get dark buttons here and toggle them via js -->
+        <img src="" alt="">
+      </button>
+      <button class="header__add-btn" id="header__add-btn"><span class="header__plus-sign">+</span> Add Todo</button>
+    </div>
+  </header>
+  <main class="main">
+    <div class="container">
+      <div class="search__container">
+        <!-- TODO: get search icon here -->
+        <img src="" alt="">
+        <input id="search" class="search" type="text" placeholder="Search todos...">
+      </div>
+
+      <div class="filter__container">
+        <div class="filter__todo-status">
+          <button class="filter__button">All</button>
+          <button class="filter__button">Active</button>
+          <button class="filter__button">Completed</button>
+        </div>
+        <label for="filter__todo-select" class="filter__todo-data">
+          <select class="filter__todo-select" id="filter__todo-select">
+            <option value="due">Due Date</option>
+            <option value="name">Name</option>
+            <option value="created">Created Date</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="todos">
+        <!-- todos will be generated here via js -->
+      </div>
+    </div>
+  </main>
 </body>
 
 </html>
