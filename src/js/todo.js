@@ -78,13 +78,13 @@ export default class ToDo {
 	}
 
 	set priority(newPriority) {
-		newPriority = newPriority.toLowerCase();
-		if (!Object.values(Priority).includes(newPriority)) {
+		const newPriorityLower = newPriority.toLowerCase();
+		if (!Object.values(Priority).includes(newPriorityLower)) {
 			throw new TypeError(
 				"incorrect input passed to priority, should be one of 'high', 'medium', 'low', ''"
 			);
 		}
-		this.#priority = newPriority;
+		this.#priority = newPriorityLower;
 	}
 	get priority() {
 		return this.#priority;
