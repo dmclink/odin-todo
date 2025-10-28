@@ -6,6 +6,10 @@ export default class Project {
 	#id;
 
 	constructor(name) {
+		if (typeof name !== 'string') {
+			throw new Error('Name must be string');
+		}
+
 		this.#name = name;
 		this.#todos = [];
 		this.#id = crypto.randomUUID();

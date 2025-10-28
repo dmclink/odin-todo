@@ -21,9 +21,19 @@ export default class ToDo {
 	#priority;
 	#notes;
 
-	constructor(title, description, dueDate, priority, notes = '') {
-		priority = priority.toLowerCase();
-		if (!Object.values(Priority).includes(priority)) {
+	constructor(
+		title,
+		description = '',
+		dueDate = '',
+		priority = '',
+		notes = ''
+	) {
+		if (!title) {
+			throw Error('title must not be empty');
+		}
+
+		const priorityLower = priority.toLowerCase();
+		if (!Object.values(Priority).includes(priorityLower)) {
 			throw new TypeError(
 				"incorrect input passed to priority, should be one of 'high', 'medium', 'low', ''"
 			);
@@ -33,7 +43,7 @@ export default class ToDo {
 		this.#title = title;
 		this.#description = description;
 		this.#dueDate = dueDate;
-		this.#priority = priority;
+		this.#priority = priorityLower;
 		this.#notes = notes;
 	}
 
