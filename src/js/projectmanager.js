@@ -63,4 +63,40 @@ export default class ProjectManager {
 
 		this.#defaultProject = this.#projects.get(projectId);
 	}
+
+	/** Gets full list of todos from every project */
+	getAllTodos() {
+		const result = [];
+		Object.values(this.getProjects()).forEach((project) => {
+			result.push(...project.getTodos());
+		});
+
+		return result;
+	}
+
+	/** Only shows todos with the completion status given. Optional search param will
+	 * further filter todos that contain a match of the input in the title, description,
+	 * or notes of the todo
+	 *
+	 * @param {'all'|'complete'|'active'} status - completion status of todos to show
+	 * @param {*} search
+	 */
+	filterTodos(status, search = '') {
+		let todos = this.getAllTodos();
+
+		if (status !== 'all') {
+			todos = todos.filter((todo) => todo.status === status);
+		}
+
+		if (search) {
+			todos = todos.filter(
+				(todo) =>
+					todo.title.includes(search) ||
+					todo.description.includes(search) ||
+					todo.notes.includes(search)
+			);
+		}
+
+		return todos;
+	}
 }

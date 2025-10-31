@@ -119,4 +119,12 @@ export default class ToDo {
 	toggleComplete() {
 		this.#complete = !this.#complete;
 	}
+
+	get complete() {
+		return this.#complete;
+	}
+
+	get status() {
+		return this.#complete ? 'complete' : 'active';
+	}
 }

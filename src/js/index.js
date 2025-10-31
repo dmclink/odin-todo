@@ -9,7 +9,6 @@ window.ToDo = ToDo;
 
 document.addEventListener('DOMContentLoaded', () => {
 	const pm = new ProjectManager();
-	console.log('hello world');
 
 	// DELETE: attaching to window so we can test in command line
 	window.pm = pm;
