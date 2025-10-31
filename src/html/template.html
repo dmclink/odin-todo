@@ -14,15 +14,26 @@
         Projects
       </h1>
     </div>
-    <ul class="projects__list">
-      <li class="projects__li">
+    <ul class="projects__list" id="projects__list">
+      <!-- <li class="projects__li" id="projects__li">
         <button class="projects__btn">
           <img src="../img/folder-icon.svg" class="projects__icon">
           <p class="projects__project-name">All Projects</p>
-          <!-- count will be populated and updated via js TODO: remove placeholder count in production -->
           <span class="projects__todo-count">24</span>
         </button>
-      </li>
+      </li> -->
+      <template id="projects__li-template">
+        <li class="projects__li" id="projects__li">
+          <button class="projects__btn">
+            <div class="projects__icon-wrapper">
+              <img src="../img/circle.svg" class="projects__icon">
+            </div>
+            <p class="projects__project-name"></p>
+            <span class="projects__todo-count"></span>
+          </button>
+        </li>
+      </template>
+
       <!-- individual project buttons will be generated via js-->
     </ul>
   </aside>

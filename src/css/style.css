@@ -190,10 +190,20 @@ summary {
 .projects__btn {
 	width: 100%;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	gap: 0.5rem;
 	padding: 0.3rem 0.5rem;
 	border: none;
+}
+
+.projects__icon-wrapper {
+	width: 2rem;
+	display: flex;
+	justify-content: center;
+}
+
+.projects__li:not(:first-of-type) .projects__icon {
+	width: 1rem;
 }
 
 .projects__todo-count {
