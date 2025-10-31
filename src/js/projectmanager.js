@@ -52,6 +52,19 @@ export default class ProjectManager {
 		return result;
 	}
 
+	listProjectNamesAndCounts() {
+		const result = [];
+		let totalCount = 0;
+		Object.values(this.getProjects()).forEach((project) => {
+			result.push({ name: project.name, count: project.count });
+			totalCount += project.count;
+		});
+
+		result.unshift({ name: 'All Projects', count: totalCount });
+
+		return result;
+	}
+
 	/** Sets default project to the project stored at projectId. Throws error if none exist.
 	 *
 	 * @param {string} projectId - the project id of the new default project
@@ -76,10 +89,10 @@ export default class ProjectManager {
 
 	/** Only shows todos with the completion status given. Optional search param will
 	 * further filter todos that contain a match of the input in the title, description,
-	 * or notes of the todo
+	 * or notes of the todo. If empty string is entered to search, it is skipped.
 	 *
 	 * @param {'all'|'complete'|'active'} status - completion status of todos to show
-	 * @param {*} search
+	 * @param {string} search - find todos containing this string
 	 */
 	filterTodos(status, search = '') {
 		let todos = this.getAllTodos();

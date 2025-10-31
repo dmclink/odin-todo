@@ -4,6 +4,7 @@ export default class Project {
 	#name;
 	#todos;
 	#id;
+	#count;
 
 	constructor(name) {
 		if (typeof name !== 'string') {
@@ -13,6 +14,7 @@ export default class Project {
 		this.#name = name;
 		this.#todos = [];
 		this.#id = crypto.randomUUID();
+		this.#count = 0;
 	}
 
 	/** Adds new todo to this project's list
@@ -24,6 +26,7 @@ export default class Project {
 			throw new TypeError('projects only accepts ToDo items');
 		}
 		this.#todos.push(newTodo);
+		this.#count++;
 	}
 
 	/** Removes the todo from this project's list that has a matching id with input
@@ -37,6 +40,7 @@ export default class Project {
 		}
 
 		this.#todos.splice(idx, 1);
+		this.#count--;
 	}
 
 	get id() {
@@ -53,6 +57,10 @@ export default class Project {
 		}
 
 		this.#name = newName;
+	}
+
+	get count() {
+		return this.#count;
 	}
 
 	getTodos() {
