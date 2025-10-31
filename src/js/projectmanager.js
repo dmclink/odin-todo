@@ -14,7 +14,7 @@ export default class ProjectManager {
 		this.#projects.set(newDefaultId, newDefaultProject);
 	}
 
-	add(name) {
+	addProject(name) {
 		const newProject = new Project(name);
 		const newId = newProject.id;
 
