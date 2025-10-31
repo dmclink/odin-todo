@@ -1,3 +1,4 @@
+import '../css/style.css';
 import ProjectManager from './projectmanager.js';
 // DELETE:
 import Project from './project.js';
