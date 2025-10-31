@@ -20,6 +20,7 @@ export default class ToDo {
 	#dueDate;
 	#priority;
 	#notes;
+	#complete;
 
 	constructor(
 		title,
@@ -45,6 +46,7 @@ export default class ToDo {
 		this.#dueDate = dueDate;
 		this.#priority = priorityLower;
 		this.#notes = notes;
+		this.#complete = false;
 	}
 
 	set title(newTitle) {
@@ -109,6 +111,12 @@ export default class ToDo {
 			dueDate: this.#dueDate,
 			priority: this.#priority,
 			notes: this.#notes,
+			complete: this.#complete,
 		};
+	}
+
+	/** Toggles boolean for ToDo's completion status */
+	toggleComplete() {
+		this.#complete = !this.#complete;
 	}
 }
