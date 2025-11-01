@@ -18,28 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		dc.toggleDarkMode();
 	}
 
-	// bind event for dark mode toggle button
-	document
-		.querySelector('#header__dark-toggle')
-		.addEventListener('click', () => {
-			dc.toggleDarkMode();
-		});
-
-	// bind event to open modal
-	document.querySelector('#header__add-btn').addEventListener('click', () => {
-		dc.showModal();
-	});
-
-	// bind event to close modal on cancel button click
-	document.querySelector('#new-todo__cancel').addEventListener('click', () => {
-		dc.closeModal();
-	});
+	dc.bindEvents();
 
 	// bind event to add new todo
 	document.querySelector('#new-todo__add').addEventListener('click', () => {
 		const formData = dc.getFormData();
-		console.log(formData);
-		// check requiered name field has a value
+		// check required name field has a value
 		if (!formData.get('name')) {
 			document
 				.querySelector('#new-todo__name')
@@ -59,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			)
 		);
 
-		// TODO: update counts
+		const projects = pm.listProjectNamesAndCounts();
+		dc.renderProjectsList(projects);
+		dc.updateHeader();
+		dc.closeModal();
 	});
 
 	// DELETE: attaching to window so we can test in command line
@@ -69,4 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// initially populate projects list
 	const projects = pm.listProjectNamesAndCounts();
 	dc.renderProjectsList(projects);
+
+	// initialize header for the default selection
+	dc.updateHeader();
 });
