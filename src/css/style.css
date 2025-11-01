@@ -132,6 +132,8 @@ summary {
 	--c3: #cbd5e0;
 	--c4: #252e3d;
 	--c5: #1a202c;
+	--c6: #b6bfc8;
+	--projects-highlight-color: var(--c6);
 }
 
 html.dark {
@@ -140,6 +142,7 @@ html.dark {
 	--c3: #2d3748;
 	--c4: #4a5568;
 	--c5: #cbd5e0;
+	--projects-highlight-color: var(--c4);
 }
 
 /* #endregion */
@@ -189,7 +192,6 @@ img {
 
 .projects__title {
 	font-size: 1.5rem;
-	/* margin-bottom: 1rem; */
 }
 
 .projects__list {
@@ -202,7 +204,7 @@ img {
 	overflow: hidden;
 
 	:hover {
-		background-color: var(--c4);
+		background-color: var(--projects-highlight-color);
 	}
 }
 
