@@ -7,6 +7,17 @@ export default class DisplayController {
 	#projectsListItemTemplate = document.querySelector('#projects__li-template');
 	#darkToggleIcon = document.querySelector('#header__dark-toggle-icon');
 	#htmlEl = document.querySelector('html');
+	#newToDoModal = document.querySelector('#new-todo');
+	#newToDoForm = document.querySelector('#new-todo__form');
+
+	showModal() {
+		this.#newToDoModal.showModal();
+	}
+
+	closeModal() {
+		this.#newToDoForm.reset();
+		this.#newToDoModal.close();
+	}
 
 	toggleDarkMode() {
 		if (this.#htmlEl.classList.contains('dark')) {

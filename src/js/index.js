@@ -18,15 +18,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		dc.toggleDarkMode();
 	}
 
+	// bind event for dark mode toggle button
 	document
 		.querySelector('#header__dark-toggle')
 		.addEventListener('click', () => {
 			dc.toggleDarkMode();
 		});
 
+	// bind event to open modal
+	document.querySelector('#header__add-btn').addEventListener('click', () => {
+		dc.showModal();
+	});
+
+	// bind event to close modal on cancel button click
+	document.querySelector('#new-todo__cancel').addEventListener('click', () => {
+		dc.closeModal();
+	});
+
 	// DELETE: attaching to window so we can test in command line
 	window.pm = pm;
 
+	// initially populate projects list
 	const projects = pm.listProjectNamesAndCounts();
 	dc.renderProjectsList(projects);
 });

@@ -50,6 +50,39 @@
   </header>
 
   <main class="main">
+    <dialog class="new-todo" id="new-todo">
+      <h2 class="new-todo__title">Add ToDo</h2>
+
+      <form class="new-todo__form" id="new-todo__form">
+        <label for="new-todo__name">Name:
+          <input class="new-todo__form-control" type="text" name="new-todo__name" id="new-todo__name">
+        </label>
+
+        <label for="new-todo__description">Description:
+          <input class="new-todo__form-control" type="text" name="new-todo__description" id="new-todo__description">
+        </label>
+
+        <label for="new-todo__notes">Notes:
+          <textarea class="new-todo__form-control" name="new-todo__notes" class="new-todo__notes" id="new-todo__notes"
+            rows="6"></textarea>
+        </label>
+
+        <label for="new-todo__priority">Priority:
+          <select class="new-todo__form-control" name="new-todo__priority" id="new-todo__priority">
+            <option value="" selected>N/A</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </label>
+
+        <div class="new-todo__btn-controls">
+          <button type="button" class="new-todo__btn new-todo__cancel" id="new-todo__cancel">Cancel</button>
+          <button type="button" class="new-todo__btn new-todo__add" id="new-todo__add">Add</button>
+        </div>
+      </form>
+    </dialog>
+
     <div class="container">
       <div class="search__container">
         <img src="../img/search.svg" alt="">
@@ -71,7 +104,7 @@
         </label>
       </div>
 
-      <div class="todos">
+      <div class="todos" id="todos">
         <!-- todos will be generated here via js -->
       </div>
     </div>
