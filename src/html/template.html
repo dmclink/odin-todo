@@ -54,26 +54,32 @@
       <h2 class="new-todo__title">Add ToDo</h2>
 
       <form class="new-todo__form" id="new-todo__form">
-        <label for="new-todo__name">Name:
-          <input class="new-todo__form-control" type="text" name="new-todo__name" id="new-todo__name">
+        <label for="new-todo__name">
+          <div class="required-label">Name:<span class="required-text"> *required</span></div>
+          <input class="new-todo__form-control" type="text" name="name" id="new-todo__name" required>
         </label>
 
         <label for="new-todo__description">Description:
-          <input class="new-todo__form-control" type="text" name="new-todo__description" id="new-todo__description">
+          <input class="new-todo__form-control" type="text" name="description" id="new-todo__description">
         </label>
 
-        <label for="new-todo__notes">Notes:
-          <textarea class="new-todo__form-control" name="new-todo__notes" class="new-todo__notes" id="new-todo__notes"
-            rows="6"></textarea>
+        <label for="new-todo__due-date">Due Date:
+          <input type="date" name="due-date" id="new-todo__due-date">
+
         </label>
 
         <label for="new-todo__priority">Priority:
-          <select class="new-todo__form-control" name="new-todo__priority" id="new-todo__priority">
+          <select class="new-todo__form-control" name="priority" id="new-todo__priority">
             <option value="" selected>N/A</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
+        </label>
+
+        <label for="new-todo__notes">Notes:
+          <textarea class="new-todo__form-control" name="notes" class="new-todo__notes" id="new-todo__notes"
+            rows="6"></textarea>
         </label>
 
         <div class="new-todo__btn-controls">

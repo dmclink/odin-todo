@@ -35,8 +35,36 @@ document.addEventListener('DOMContentLoaded', () => {
 		dc.closeModal();
 	});
 
+	// bind event to add new todo
+	document.querySelector('#new-todo__add').addEventListener('click', () => {
+		const formData = dc.getFormData();
+		console.log(formData);
+		// check requiered name field has a value
+		if (!formData.get('name')) {
+			document
+				.querySelector('#new-todo__name')
+				.setCustomValidity('Name is required');
+			document.querySelector('#new-todo__name').reportValidity();
+			return;
+		}
+
+		const projectId = dc.selectedProject();
+		pm.getProject(projectId).add(
+			new ToDo(
+				formData.get('name'),
+				formData.get('description'),
+				formData.get('due-date'),
+				formData.get('priority'),
+				formData.get('notes')
+			)
+		);
+
+		// TODO: update counts
+	});
+
 	// DELETE: attaching to window so we can test in command line
 	window.pm = pm;
+	window.dc = dc;
 
 	// initially populate projects list
 	const projects = pm.listProjectNamesAndCounts();

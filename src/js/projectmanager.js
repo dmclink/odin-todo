@@ -56,7 +56,7 @@ export default class ProjectManager {
 		const result = [];
 		let totalCount = 0;
 		Object.values(this.getProjects()).forEach((project) => {
-			result.push({ name: project.name, count: project.count });
+			result.push({ id: project.id, name: project.name, count: project.count });
 			totalCount += project.count;
 		});
 

@@ -9,6 +9,7 @@ export default class DisplayController {
 	#htmlEl = document.querySelector('html');
 	#newToDoModal = document.querySelector('#new-todo');
 	#newToDoForm = document.querySelector('#new-todo__form');
+	#selectedProject;
 
 	showModal() {
 		this.#newToDoModal.showModal();
@@ -17,6 +18,21 @@ export default class DisplayController {
 	closeModal() {
 		this.#newToDoForm.reset();
 		this.#newToDoModal.close();
+	}
+
+	getFormData() {
+		return new FormData(this.#newToDoForm);
+		// TODO:
+	}
+
+	selectProject(id) {
+		this.#selectedProject = id;
+		// TODO: update highlight class on projects list
+		// TODO: update name and count in header
+	}
+
+	selectedProject() {
+		return this.#selectedProject;
 	}
 
 	toggleDarkMode() {
@@ -43,6 +59,8 @@ export default class DisplayController {
 
 			newProjectEl.querySelector('.projects__todo-count').textContent =
 				project.count;
+
+			newProjectEl['data-id'] = project.id;
 
 			this.#projectsList.appendChild(newProjectEl);
 		});
