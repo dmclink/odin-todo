@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	const pm = new ProjectManager();
 	const dc = new DisplayController();
 
+	// start screen in dark mode if user prefers dark
+	if (window.matchMedia('(prefers-color-scheme: dark').matches) {
+		dc.toggleDarkMode();
+	}
+
+	document
+		.querySelector('#header__dark-toggle')
+		.addEventListener('click', () => {
+			dc.toggleDarkMode();
+		});
+
 	// DELETE: attaching to window so we can test in command line
 	window.pm = pm;
 

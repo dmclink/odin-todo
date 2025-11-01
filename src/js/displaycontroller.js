@@ -1,8 +1,22 @@
 import folderIconSvg from '../img/folder-icon.svg';
+import darkIconSvg from '../img/dark-mode-icon.svg';
+import lightIconSvg from '../img/light-mode-icon.svg';
 
 export default class DisplayController {
 	#projectsList = document.querySelector('#projects__list');
 	#projectsListItemTemplate = document.querySelector('#projects__li-template');
+	#darkToggleIcon = document.querySelector('#header__dark-toggle-icon');
+	#htmlEl = document.querySelector('html');
+
+	toggleDarkMode() {
+		if (this.#htmlEl.classList.contains('dark')) {
+			this.#darkToggleIcon.src = lightIconSvg;
+		} else {
+			this.#darkToggleIcon.src = darkIconSvg;
+		}
+
+		this.#htmlEl.classList.toggle('dark');
+	}
 
 	renderProjectsList(projects) {
 		// wipe projects list so we can fill in with updated count values and projects by appending

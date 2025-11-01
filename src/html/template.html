@@ -15,13 +15,6 @@
       </h1>
     </div>
     <ul class="projects__list" id="projects__list">
-      <!-- <li class="projects__li" id="projects__li">
-        <button class="projects__btn">
-          <img src="../img/folder-icon.svg" class="projects__icon">
-          <p class="projects__project-name">All Projects</p>
-          <span class="projects__todo-count">24</span>
-        </button>
-      </li> -->
       <template id="projects__li-template">
         <li class="projects__li" id="projects__li">
           <button class="projects__btn">
@@ -40,17 +33,19 @@
 
   <header class="header">
     <div class="header__info">
-      <h1 class="header__title">All Todos</h1>
+      <!-- title will be populated with current selected project TODO: remove placeholder title in production -->
+      <h1 class="header__title" id="header__title">All Todos</h1>
       <!-- count will be populated and updated via js TODO: remove placeholder count in production -->
-      <p class="header__todo-count">24 todos</p>
+      <p class="header__todo-count" id="header__todo-count"><span id="header__active-todos">24</span> active todos</p>
     </div>
 
     <div class="header__controls">
       <button class="header__dark-toggle" id="header__dark-toggle">
-        <!-- TODO: get dark buttons here and toggle them via js -->
-        <img src="../img/dark-mode-icon.svg" alt="">
+        <!-- TODO: toggle light and dark mode here -->
+        <img class="header__dark-toggle-icon" id="header__dark-toggle-icon" src="../img/light-mode-icon.svg" alt="">
       </button>
-      <button class="header__add-btn" id="header__add-btn"><span class="header__plus-sign">+</span> Add Todo</button>
+      <button class="header__add-btn" id="header__add-btn"><span class="header__plus-sign">+</span> <span
+          class="header__add-text">Add Todo</span></button>
     </div>
   </header>
 
