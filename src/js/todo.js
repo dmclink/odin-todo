@@ -21,6 +21,7 @@ export default class ToDo {
 	#priority;
 	#notes;
 	#complete;
+	#created;
 
 	constructor(
 		title,
@@ -47,6 +48,11 @@ export default class ToDo {
 		this.#priority = priorityLower;
 		this.#notes = notes;
 		this.#complete = false;
+		this.#created = new Date();
+	}
+
+	get created() {
+		return this.#created;
 	}
 
 	set title(newTitle) {

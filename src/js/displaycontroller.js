@@ -34,6 +34,8 @@ export default class DisplayController {
 	#statusFilterBtns = document.querySelectorAll('.filter__button');
 	#sortFilterSelectEl = document.querySelector('#filter__todo-select');
 	#searchFilterBar = document.querySelector('#search');
+	#todoCardTemplate = document.getElementById('todo-card-template');
+	#todosContainer = document.getElementById('todos');
 
 	#selectedStatusFilter = 'active';
 	#selectedSortFilter = 'due';
@@ -41,60 +43,6 @@ export default class DisplayController {
 
 	// 'All Projects' has an empty string for id, this will be the default selection on loading
 	#selectedProject = '';
-
-	bindEvents() {
-		// bind event for dark mode toggle button
-		document
-			.querySelector('#header__dark-toggle')
-			.addEventListener('click', () => {
-				this.toggleDarkMode();
-			});
-
-		// bind event to open modal
-		document.querySelector('#header__add-btn').addEventListener('click', () => {
-			this.showModal();
-		});
-
-		// bind event to close modal on cancel button click
-		document
-			.querySelector('#new-todo__cancel')
-			.addEventListener('click', () => {
-				this.closeModal();
-			});
-
-		// bind event for selecting status filters
-		this.#statusFilterBtns.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				this.selectStatusFilter(btn);
-				debouncedEmitFilterChange(
-					this.statusFilter,
-					this.sortFilter,
-					this.searchFilter
-				);
-			});
-		});
-
-		// bind event listener for selecting sort filters
-		this.#sortFilterSelectEl.addEventListener('change', (e) => {
-			this.sortFilter = e.target.value;
-			debouncedEmitFilterChange(
-				this.statusFilter,
-				this.sortFilter,
-				this.searchFilter
-			);
-		});
-
-		// event listener for search bar inputs
-		this.#searchFilterBar.addEventListener('input', (e) => {
-			this.searchFilter = e.target.value;
-
-			debouncedEmitFilterChange(
-				this.statusFilter,
-				this.sortFilter,
-				this.searchFilter
-			);
-		});
-	}
 
 	set searchFilter(newVal) {
 		this.#searchFilterValue = newVal;
@@ -221,5 +169,81 @@ export default class DisplayController {
 		// let the 'All Projects' entry have a special icon
 		this.#projectsList.firstElementChild.querySelector('.projects__icon').src =
 			folderIconSvg;
+	}
+
+	createTodoCard(todo) {
+		console.log(todo);
+		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
+		todoCard.querySelector('.todo-card__title').textContent = todo.title;
+		todoCard.querySelector('.todo-card__due-date').textContent = todo.dueDate;
+		todoCard.querySelector('.todo-card__description').textContent =
+			todo.description;
+		todoCard.querySelector('.todo-card__notes').textContent = todo.notes;
+
+		return todoCard;
+	}
+
+	displayTodos(todos) {
+		this.#todosContainer.innerHTML = '';
+		for (const todo of todos) {
+			const todoCard = this.createTodoCard(todo);
+			this.#todosContainer.appendChild(todoCard);
+		}
+	}
+
+	bindEvents() {
+		// bind event for dark mode toggle button
+		document
+			.querySelector('#header__dark-toggle')
+			.addEventListener('click', () => {
+				this.toggleDarkMode();
+			});
+
+		// bind event to open modal
+		document.querySelector('#header__add-btn').addEventListener('click', () => {
+			this.showModal();
+		});
+
+		// bind event to close modal on cancel button click
+		document
+			.querySelector('#new-todo__cancel')
+			.addEventListener('click', () => {
+				this.closeModal();
+			});
+
+		// bind event for selecting status filters
+		this.#statusFilterBtns.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				this.selectStatusFilter(btn);
+				debouncedEmitFilterChange(
+					this.statusFilter,
+					this.sortFilter,
+					this.searchFilter
+				);
+			});
+		});
+
+		// bind event listener for selecting sort filters
+		this.#sortFilterSelectEl.addEventListener('change', (e) => {
+			this.sortFilter = e.target.value;
+			debouncedEmitFilterChange(
+				this.statusFilter,
+				this.sortFilter,
+				this.searchFilter
+			);
+		});
+
+		// event listener for search bar inputs
+		this.#searchFilterBar.addEventListener('input', (e) => {
+			this.searchFilter = e.target.value;
+
+			debouncedEmitFilterChange(
+				this.statusFilter,
+				this.sortFilter,
+				this.searchFilter
+			);
+		});
+
+		em.on('todosUpdated', this.displayTodos.bind(this));
 	}
 }

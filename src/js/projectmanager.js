@@ -114,9 +114,27 @@ export default class ProjectManager {
 		return todos;
 	}
 
+	sortTodos(sortMethod, todos) {
+		switch (sortMethod) {
+			case 'due':
+				todos.sort((a, b) => Date(a.dueDate) < Date(b.dueDate));
+				break;
+
+			case 'name':
+				todos.sort((a, b) => a.name < b.name);
+				break;
+
+			case 'created':
+				todos.sort((a, b) => a.created < b.created);
+				break;
+		}
+	}
+
 	bindEvents() {
 		em.on('filterChange', (status, sort, search) => {
-			console.log(status, sort, search);
+			const todos = this.filterTodos(status, search);
+			this.sortTodos(sort, todos);
+			em.emit('todosUpdated', todos);
 		});
 	}
 }

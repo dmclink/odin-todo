@@ -407,6 +407,7 @@ select {
 .filter__container {
 	display: flex;
 	align-items: center;
+	gap: 1rem;
 }
 
 .filter__todo-status {
@@ -433,4 +434,34 @@ select {
 		filter: brightness(0.6);
 		cursor: default;
 	}
+}
+
+/* TODO CARD */
+.todo-card {
+	--control-width: 20px;
+	--pd: 0.7rem;
+	background-color: var(--c2);
+	border-radius: var(--btn-radius);
+	padding: var(--pd) calc(var(--control-width) + var(--pd) * 2);
+	position: relative;
+}
+
+.todo-card__title {
+	font-size: 1.2rem;
+}
+
+.todo-card__checkbox {
+	width: var(--control-width);
+	position: absolute;
+	left: var(--pd);
+	top: calc(var(--pd) * 1.5);
+}
+
+.todo-card__options {
+	width: var(--control-width);
+	stroke: var(--c6);
+	fill: var(--c6);
+	position: absolute;
+	right: var(--pd);
+	top: calc(var(--pd) * 1.5);
 }
