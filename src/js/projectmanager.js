@@ -2,14 +2,37 @@ import Project from './project.js';
 import ToDo from './todo.js';
 import em from '../js/events.js';
 
+const priorityMap = {
+	high: 3,
+	medium: 2,
+	low: 1,
+	'': 0,
+};
+
+function comparePriority(pri1, pri2) {
+	const pri1Val = priorityMap[pri1];
+	const pri2Val = priorityMap[pri2];
+
+	return pri1Val < pri2Val;
+}
+
 function sortTodos(sortMethod, todos) {
 	switch (sortMethod) {
 		case 'due':
-			todos.sort((a, b) => Date(a.dueDate) < Date(b.dueDate));
+			todos.sort((a, b) => {
+				const aDate = new Date(a.dueDate);
+				const bDate = new Date(b.dueDate);
+
+				if (aDate.getTime() === bDate.getTime()) {
+					return comparePriority(a.priority, b.priority);
+				}
+
+				return aDate > bDate;
+			});
 			break;
 
 		case 'name':
-			todos.sort((a, b) => a.name < b.name);
+			todos.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase());
 			break;
 
 		case 'created':
@@ -133,7 +156,7 @@ export default class ProjectManager {
 
 	bindEvents() {
 		// when the user clicks either one of the filter tabs, selects a new sort,
-		// enters a query in the search bar TODO: or adds a new todo?
+		// enters a query in the search bar, or adds a new todo
 		em.on('filterChange', (status, sort, search) => {
 			const todos = this.filterTodos(status, search);
 			sortTodos(sort, todos);

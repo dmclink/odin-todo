@@ -163,19 +163,17 @@ export default class DisplayController {
 
 			this.#projectsList.appendChild(newProjectEl);
 		});
-		console.log(
-			this.#projectsList.firstElementChild.querySelector('.projects__icon').src
-		);
+
 		// let the 'All Projects' entry have a special icon
 		this.#projectsList.firstElementChild.querySelector('.projects__icon').src =
 			folderIconSvg;
 	}
 
 	createTodoCard(todo) {
-		console.log(todo);
 		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
 		todoCard.querySelector('.todo-card__title').textContent = todo.title;
 		todoCard.querySelector('.todo-card__due-date').textContent = todo.dueDate;
+		todoCard.querySelector('.todo-card__priority').textContent = todo.priority;
 		todoCard.querySelector('.todo-card__description').textContent =
 			todo.description;
 		todoCard.querySelector('.todo-card__notes').textContent = todo.notes;
