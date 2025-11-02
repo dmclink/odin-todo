@@ -1,3 +1,4 @@
+import EventEmitter from '../js/events.js';
 import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
@@ -13,6 +14,7 @@ export default class DisplayController {
 	#headerCount = document.querySelector('#header__active-todos');
 	#statusFilterBtns = document.querySelectorAll('.filter__button');
 	#selectedStatusFilter = 'active';
+	#em = new EventEmitter();
 
 	// 'All Projects' has an empty string for id, this will be the default selection on loading
 	#selectedProject = '';
@@ -39,10 +41,12 @@ export default class DisplayController {
 
 		// bind event for selecting status filters
 		this.#statusFilterBtns.forEach((btn) => {
-			console.log(btn, 'clicked');
 			btn.addEventListener('click', () => {
+				console.log(btn, 'clicked');
 				this.selectStatusFilter(btn);
+				console.log(this.selectedStatusFilter());
 			});
+			this.#em.emit('statusFilterChange', this.selectedStatusFilter());
 		});
 	}
 
@@ -52,6 +56,8 @@ export default class DisplayController {
 		});
 
 		btn.setAttribute('aria-selected', 'true');
+
+		this.#selectedStatusFilter = btn.value;
 	}
 
 	selectedStatusFilter() {
