@@ -115,8 +115,8 @@ export default class ProjectManager {
 	}
 
 	bindEvents() {
-		em.on('filterChange', (status, sort) => {
-			console.log(status, sort);
+		em.on('filterChange', (status, sort, search) => {
+			console.log(status, sort, search);
 		});
 	}
 }

@@ -3,6 +3,24 @@ import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
 
+function debounce(fn, delay = 300) {
+	let timeoutId;
+
+	return function debouncedFunc(...args) {
+		clearTimeout(timeoutId);
+
+		timeoutId = setTimeout(() => {
+			fn.apply(this, args);
+		}, delay);
+	};
+}
+
+function emitFilterChange(statusFilter, sortFilter, searchFilter) {
+	em.emit('filterChange', statusFilter, sortFilter, searchFilter);
+}
+
+const debouncedEmitFilterChange = debounce(emitFilterChange);
+
 export default class DisplayController {
 	// cached selectors
 	#projectsList = document.querySelector('#projects__list');
@@ -15,9 +33,11 @@ export default class DisplayController {
 	#headerCount = document.querySelector('#header__active-todos');
 	#statusFilterBtns = document.querySelectorAll('.filter__button');
 	#sortFilterSelectEl = document.querySelector('#filter__todo-select');
+	#searchFilterBar = document.querySelector('#search');
 
 	#selectedStatusFilter = 'active';
 	#selectedSortFilter = 'due';
+	#searchFilterValue = '';
 
 	// 'All Projects' has an empty string for id, this will be the default selection on loading
 	#selectedProject = '';
@@ -46,15 +66,42 @@ export default class DisplayController {
 		this.#statusFilterBtns.forEach((btn) => {
 			btn.addEventListener('click', () => {
 				this.selectStatusFilter(btn);
-				em.emit('filterChange', this.statusFilter, this.sortFilter);
+				debouncedEmitFilterChange(
+					this.statusFilter,
+					this.sortFilter,
+					this.searchFilter
+				);
 			});
 		});
 
 		// bind event listener for selecting sort filters
 		this.#sortFilterSelectEl.addEventListener('change', (e) => {
 			this.sortFilter = e.target.value;
-			em.emit('filterChange', this.statusFilter, this.sortFilter);
+			debouncedEmitFilterChange(
+				this.statusFilter,
+				this.sortFilter,
+				this.searchFilter
+			);
 		});
+
+		// event listener for search bar inputs
+		this.#searchFilterBar.addEventListener('input', (e) => {
+			this.searchFilter = e.target.value;
+
+			debouncedEmitFilterChange(
+				this.statusFilter,
+				this.sortFilter,
+				this.searchFilter
+			);
+		});
+	}
+
+	set searchFilter(newVal) {
+		this.#searchFilterValue = newVal;
+	}
+
+	get searchFilter() {
+		return this.#searchFilterValue;
 	}
 
 	set sortFilter(newVal) {
