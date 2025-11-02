@@ -46,7 +46,7 @@ export default class ProjectManager {
 	#defaultProject;
 
 	constructor() {
-		const defaultName = 'default';
+		const defaultName = 'Todos';
 		const newDefaultProject = new Project(defaultName);
 		const newDefaultId = newDefaultProject.id;
 		this.#defaultProject = newDefaultProject;
@@ -101,7 +101,12 @@ export default class ProjectManager {
 			totalCount += project.count;
 		});
 
-		result.unshift({ name: 'All Projects', count: totalCount });
+		result.unshift({
+			id: this.#defaultProject.id,
+			name: 'All Projects',
+			count: totalCount,
+			default: true,
+		});
 
 		return result;
 	}
@@ -167,6 +172,7 @@ export default class ProjectManager {
 		em.on('addTodo', (projectId, formData) => {
 			this.getProject(projectId).add(
 				new ToDo(
+					projectId,
 					formData.get('name'),
 					formData.get('description'),
 					formData.get('due-date'),

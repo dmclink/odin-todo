@@ -15,6 +15,7 @@ const Priority = Object.freeze({
  */
 export default class ToDo {
 	#id;
+	#projectId;
 	#title;
 	#description;
 	#dueDate;
@@ -24,6 +25,7 @@ export default class ToDo {
 	#created;
 
 	constructor(
+		projectId,
 		title,
 		description = '',
 		dueDate = '',
@@ -42,6 +44,7 @@ export default class ToDo {
 		}
 
 		this.#id = crypto.randomUUID();
+		this.#projectId = projectId;
 		this.#title = title;
 		this.#description = description;
 		this.#dueDate = dueDate;
@@ -49,6 +52,14 @@ export default class ToDo {
 		this.#notes = notes;
 		this.#complete = false;
 		this.#created = new Date();
+	}
+
+	get id() {
+		return this.#id;
+	}
+
+	get projectId() {
+		return this.#projectId;
 	}
 
 	get created() {

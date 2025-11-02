@@ -41,8 +41,12 @@ export default class DisplayController {
 	#selectedSortFilter = 'due';
 	#searchFilterValue = '';
 
-	// 'All Projects' has an empty string for id, this will be the default selection on loading
-	#selectedProject = '';
+	// TODO: this is a problem when adding default project associated project id to todos
+	#selectedProject;
+
+	constructor(defaultProjectId) {
+		this.#selectedProject = defaultProjectId;
+	}
 
 	set searchFilter(newVal) {
 		this.#searchFilterValue = newVal;
@@ -103,9 +107,11 @@ export default class DisplayController {
 	getSelectedNameCount() {
 		const id = this.#selectedProject;
 		const projectBtns = this.#projectsList.querySelectorAll('.projects__btn');
-
+		console.log(id);
 		const selectedBtn = Array.from(projectBtns).find(
-			(btn) => btn.getAttribute('data-id') === id
+			(btn) =>
+				!btn.hasAttribute('data-default-btn') &&
+				btn.getAttribute('data-id') === id
 		);
 
 		const name = selectedBtn.getAttribute('data-name');
@@ -156,6 +162,9 @@ export default class DisplayController {
 			btn.setAttribute('data-id', project.id || '');
 			btn.setAttribute('data-name', project.name || '');
 			btn.setAttribute('data-count', project.count || '0');
+			if (project.default) {
+				btn.setAttribute('data-default-btn', 'true');
+			}
 
 			btn.addEventListener('click', () => {
 				this.selectProject(btn.getAttribute('data-id'));
@@ -171,13 +180,17 @@ export default class DisplayController {
 
 	createTodoCard(todo) {
 		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
+		// TODO: not working because cloned node is DocumentFragment type
+		console.log(todoCard);
+		todoCard.firstElementChild.setAttribute('data-id', todo.id);
+		todoCard.firstElementChild.setAttribute('data-project-id', todo.projectId);
+
 		todoCard.querySelector('.todo-card__title').textContent = todo.title;
 		todoCard.querySelector('.todo-card__due-date').textContent = todo.dueDate;
 		todoCard.querySelector('.todo-card__priority').textContent = todo.priority;
 		todoCard.querySelector('.todo-card__description').textContent =
 			todo.description;
 		todoCard.querySelector('.todo-card__notes').textContent = todo.notes;
-
 		return todoCard;
 	}
 
