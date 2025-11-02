@@ -1,5 +1,22 @@
 import Project from './project.js';
+import ToDo from './todo.js';
 import em from '../js/events.js';
+
+function sortTodos(sortMethod, todos) {
+	switch (sortMethod) {
+		case 'due':
+			todos.sort((a, b) => Date(a.dueDate) < Date(b.dueDate));
+			break;
+
+		case 'name':
+			todos.sort((a, b) => a.name < b.name);
+			break;
+
+		case 'created':
+			todos.sort((a, b) => a.created < b.created);
+			break;
+	}
+}
 
 export default class ProjectManager {
 	#projects;
@@ -114,27 +131,30 @@ export default class ProjectManager {
 		return todos;
 	}
 
-	sortTodos(sortMethod, todos) {
-		switch (sortMethod) {
-			case 'due':
-				todos.sort((a, b) => Date(a.dueDate) < Date(b.dueDate));
-				break;
-
-			case 'name':
-				todos.sort((a, b) => a.name < b.name);
-				break;
-
-			case 'created':
-				todos.sort((a, b) => a.created < b.created);
-				break;
-		}
-	}
-
 	bindEvents() {
+		// when the user clicks either one of the filter tabs, selects a new sort,
+		// enters a query in the search bar TODO: or adds a new todo?
 		em.on('filterChange', (status, sort, search) => {
 			const todos = this.filterTodos(status, search);
-			this.sortTodos(sort, todos);
+			sortTodos(sort, todos);
 			em.emit('todosUpdated', todos);
+		});
+
+		// when a user clicks the add todo button in the add todo modal
+		em.on('addTodo', (projectId, formData) => {
+			this.getProject(projectId).add(
+				new ToDo(
+					formData.get('name'),
+					formData.get('description'),
+					formData.get('due-date'),
+					formData.get('priority'),
+					formData.get('notes')
+				)
+			);
+
+			const projects = this.listProjectNamesAndCounts();
+
+			em.emit('newTodoAdded', projects);
 		});
 	}
 }

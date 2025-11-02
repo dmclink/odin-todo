@@ -192,6 +192,22 @@ export default class DisplayController {
 	}
 
 	bindEvents() {
+		document.querySelector('#new-todo__add').addEventListener('click', () => {
+			const formData = this.getFormData();
+			// check required name field has a value
+			if (!formData.get('name')) {
+				document
+					.querySelector('#new-todo__name')
+					.setCustomValidity('Name is required');
+				document.querySelector('#new-todo__name').reportValidity();
+				return;
+			}
+
+			const projectId = this.selectedProject();
+
+			em.emit('addTodo', projectId, formData);
+		});
+
 		// bind event for dark mode toggle button
 		document
 			.querySelector('#header__dark-toggle')
@@ -245,5 +261,16 @@ export default class DisplayController {
 		});
 
 		em.on('todosUpdated', this.displayTodos.bind(this));
+
+		em.on('newTodoAdded', (projects) => {
+			this.renderProjectsList(projects);
+			this.updateHeader();
+			this.closeModal();
+			debouncedEmitFilterChange(
+				this.statusFilter,
+				this.sortFilter,
+				this.searchFilter
+			);
+		});
 	}
 }
