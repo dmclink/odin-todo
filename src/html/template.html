@@ -44,7 +44,7 @@
         <!-- TODO: toggle light and dark mode here -->
         <img class="header__dark-toggle-icon" id="header__dark-toggle-icon" src="../img/light-mode-icon.svg" alt="">
       </button>
-      <button class="header__add-btn" id="header__add-btn"><span class="header__plus-sign">+</span> <span
+      <button class="button header__add-btn" id="header__add-btn"><span class="header__plus-sign">+</span> <span
           class="header__add-text">Add Todo</span></button>
     </div>
   </header>
@@ -83,25 +83,33 @@
         </label>
 
         <div class="new-todo__btn-controls">
-          <button type="button" class="new-todo__btn new-todo__cancel" id="new-todo__cancel">Cancel</button>
-          <button type="button" class="new-todo__btn new-todo__add" id="new-todo__add">Add</button>
+          <button type="button" class="button new-todo__btn new-todo__cancel" id="new-todo__cancel">Cancel</button>
+          <button type="button" class="button new-todo__btn new-todo__add" id="new-todo__add">Add</button>
         </div>
       </form>
     </dialog>
 
-    <div class="container">
+    <div class="filter-controls container">
       <div class="search__container">
-        <img src="../img/search.svg" alt="">
+        <svg class="search__icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </svg>
         <input id="search" class="search" type="text" placeholder="Search todos...">
       </div>
 
       <div class="filter__container">
         <div class="filter__todo-status">
-          <button class="filter__button">All</button>
-          <button class="filter__button">Active</button>
-          <button class="filter__button">Completed</button>
+          <button class="button filter__button" aria-selected="true">Active</button>
+          <button class="button filter__button">Completed</button>
+          <button class="button filter__button">All</button>
         </div>
-        <label for="filter__todo-select" class="filter__todo-data">
+        <label for="filter__todo-select" class="filter__todo-data">Sort by:
           <select class="filter__todo-select" id="filter__todo-select">
             <option value="due">Due Date</option>
             <option value="name">Name</option>
@@ -110,7 +118,7 @@
         </label>
       </div>
 
-      <div class="todos" id="todos">
+      <div class="container todos" id="todos">
         <!-- todos will be generated here via js -->
       </div>
     </div>
