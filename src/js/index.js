@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	dc.bindEvents();
+	pm.bindEvents();
 
 	// bind event to add new todo
 	document.querySelector('#new-todo__add').addEventListener('click', () => {

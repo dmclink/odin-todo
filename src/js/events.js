@@ -1,4 +1,4 @@
-export default class EventEmitter {
+class EventEmitter {
 	#events;
 
 	constructor() {
@@ -24,3 +24,5 @@ export default class EventEmitter {
 		}
 	}
 }
+
+export default new EventEmitter();

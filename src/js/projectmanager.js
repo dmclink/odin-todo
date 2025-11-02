@@ -1,4 +1,5 @@
 import Project from './project.js';
+import em from '../js/events.js';
 
 export default class ProjectManager {
 	#projects;
@@ -111,5 +112,11 @@ export default class ProjectManager {
 		}
 
 		return todos;
+	}
+
+	bindEvents() {
+		em.on('filterChange', (status, sort) => {
+			console.log(status, sort);
+		});
 	}
 }

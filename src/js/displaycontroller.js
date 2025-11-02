@@ -1,9 +1,10 @@
-import EventEmitter from '../js/events.js';
+import em from '../js/events.js';
 import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
 
 export default class DisplayController {
+	// cached selectors
 	#projectsList = document.querySelector('#projects__list');
 	#projectsListItemTemplate = document.querySelector('#projects__li-template');
 	#darkToggleIcon = document.querySelector('#header__dark-toggle-icon');
@@ -13,8 +14,10 @@ export default class DisplayController {
 	#headerTitle = document.querySelector('#header__title');
 	#headerCount = document.querySelector('#header__active-todos');
 	#statusFilterBtns = document.querySelectorAll('.filter__button');
+	#sortFilterSelectEl = document.querySelector('#filter__todo-select');
+
 	#selectedStatusFilter = 'active';
-	#em = new EventEmitter();
+	#selectedSortFilter = 'due';
 
 	// 'All Projects' has an empty string for id, this will be the default selection on loading
 	#selectedProject = '';
@@ -42,12 +45,24 @@ export default class DisplayController {
 		// bind event for selecting status filters
 		this.#statusFilterBtns.forEach((btn) => {
 			btn.addEventListener('click', () => {
-				console.log(btn, 'clicked');
 				this.selectStatusFilter(btn);
-				console.log(this.selectedStatusFilter());
+				em.emit('filterChange', this.statusFilter, this.sortFilter);
 			});
-			this.#em.emit('statusFilterChange', this.selectedStatusFilter());
 		});
+
+		// bind event listener for selecting sort filters
+		this.#sortFilterSelectEl.addEventListener('change', (e) => {
+			this.sortFilter = e.target.value;
+			em.emit('filterChange', this.statusFilter, this.sortFilter);
+		});
+	}
+
+	set sortFilter(newVal) {
+		this.#selectedSortFilter = newVal;
+	}
+
+	get sortFilter() {
+		return this.#selectedSortFilter;
 	}
 
 	selectStatusFilter(btn) {
@@ -60,7 +75,7 @@ export default class DisplayController {
 		this.#selectedStatusFilter = btn.value;
 	}
 
-	selectedStatusFilter() {
+	get statusFilter() {
 		return this.#selectedStatusFilter;
 	}
 
