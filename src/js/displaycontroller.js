@@ -135,10 +135,10 @@ export default class DisplayController {
 		this.selectProject(clickedBtn.getAttribute('data-id'));
 
 		this.#projectsList.querySelectorAll('.projects__btn').forEach((btn) => {
-			btn.classList.remove('selected');
+			btn.removeAttribute('aria-selected');
 		});
 
-		clickedBtn.classList.add('selected');
+		clickedBtn.setAttribute('aria-selected', 'true');
 	}
 
 	renderProjectsList(projects, initialBuild = false) {
@@ -177,7 +177,7 @@ export default class DisplayController {
 		if (initialBuild) {
 			this.#projectsList.firstElementChild
 				.querySelector('.projects__btn')
-				.classList.add('selected');
+				.setAttribute('aria-selected', 'true');
 		}
 	}
 

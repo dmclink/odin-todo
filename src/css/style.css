@@ -295,7 +295,7 @@ select {
 		background-color: var(--projects-hover-color);
 	}
 
-	&:has(> .projects__btn.selected) {
+	&:has(> .projects__btn[aria-selected]) {
 		background-color: var(--projects-selected-color);
 	}
 }
