@@ -3,6 +3,20 @@ import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
 
+const priorityMap = {
+	high: 3,
+	medium: 2,
+	low: 1,
+	'': 0,
+};
+
+function comparePriority(pri1, pri2) {
+	const pri1Val = priorityMap[pri1];
+	const pri2Val = priorityMap[pri2];
+
+	return pri1Val < pri2Val;
+}
+
 export default class DisplayController {
 	// cached selectors
 	#projectsList = document.querySelector('#projects__list');
@@ -189,6 +203,7 @@ export default class DisplayController {
 	createTodoCard(todo) {
 		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
 		todoCard.firstElementChild.setAttribute('data-id', todo.id);
+		todoCard.firstElementChild.setAttribute('data-created', todo.created);
 		todoCard.firstElementChild.setAttribute('data-project-id', todo.projectId);
 
 		if (todo.complete) {
@@ -253,6 +268,51 @@ export default class DisplayController {
 		}
 	}
 
+	sortTodos(sortMethod, todoNodes) {
+		const todos = Array.from(todoNodes);
+
+		switch (sortMethod) {
+			case 'due':
+				todos.sort((a, b) => {
+					const aDate = new Date(
+						a.querySelector('.todo-card__due-date').textContent
+					);
+					const bDate = new Date(
+						b.querySelector('.todo-card__due-date').textContent
+					);
+
+					if (aDate.getTime() === bDate.getTime()) {
+						return comparePriority(
+							a.querySelector('.todo-card__priority').textContent,
+							b.querySelector('.todo-card__priority').textContent
+						);
+					}
+
+					return aDate > bDate;
+				});
+				break;
+
+			case 'name':
+				todos.sort(
+					(a, b) =>
+						a.querySelector('.todo-card__title').textContent.toLowerCase() >
+						b.querySelector('.todo-card__title').textContent.toLowerCase()
+				);
+				break;
+
+			case 'created':
+				todos.sort(
+					(a, b) =>
+						a.getAttribute('data-created') < b.getAttribute('data-created')
+				);
+				break;
+		}
+
+		todos.forEach((todo) => {
+			this.#todosContainer.appendChild(todo);
+		});
+	}
+
 	/** Only shows todos with the completion status given. Optional search param will
 	 * further filter todos that contain a match of the input in the title, description,
 	 * or notes of the todo. If empty string is entered to search, it is skipped.
@@ -267,7 +327,7 @@ export default class DisplayController {
 			this.filterTodo(todo);
 		});
 
-		// TODO: need sort here! move from projectmanager.js
+		this.sortTodos(this.#selectedSortFilter, todos);
 	}
 
 	buildTodos(todos) {

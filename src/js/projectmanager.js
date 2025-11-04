@@ -2,46 +2,6 @@ import Project from './project.js';
 import ToDo from './todo.js';
 import em from '../js/events.js';
 
-const priorityMap = {
-	high: 3,
-	medium: 2,
-	low: 1,
-	'': 0,
-};
-
-function comparePriority(pri1, pri2) {
-	const pri1Val = priorityMap[pri1];
-	const pri2Val = priorityMap[pri2];
-
-	return pri1Val < pri2Val;
-}
-
-// TODO: push this to display controller
-function sortTodos(sortMethod, todos) {
-	switch (sortMethod) {
-		case 'due':
-			todos.sort((a, b) => {
-				const aDate = new Date(a.dueDate);
-				const bDate = new Date(b.dueDate);
-
-				if (aDate.getTime() === bDate.getTime()) {
-					return comparePriority(a.priority, b.priority);
-				}
-
-				return aDate > bDate;
-			});
-			break;
-
-		case 'name':
-			todos.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase());
-			break;
-
-		case 'created':
-			todos.sort((a, b) => a.created < b.created);
-			break;
-	}
-}
-
 export default class ProjectManager {
 	#projects;
 	#defaultProject;
