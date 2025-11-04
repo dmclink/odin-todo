@@ -90,14 +90,12 @@ export default class DisplayController {
 	// based on the data written into the projects list. the projects list
 	// fully refreshed whenever changes are made so the data can be considered up to date
 	getSelectedNameCount() {
-		const id = this.selectedProject();
+		const id = this.#selectedProject;
 
 		const projectBtns = this.#projectsList.querySelectorAll('.projects__btn');
 
 		const selectedBtn = Array.from(projectBtns).find(
-			(btn) =>
-				!btn.hasAttribute('data-default-btn') &&
-				btn.getAttribute('data-id') === id
+			(btn) => btn.getAttribute('data-id') === id
 		);
 
 		const name = selectedBtn.getAttribute('data-name');
