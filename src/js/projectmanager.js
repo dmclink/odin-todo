@@ -185,6 +185,9 @@ export default class ProjectManager {
 		// emits whenever a todo's status checkbox is clicked
 		em.on('changeTodoStatus', (projectId, todoId) => {
 			this.getProject(projectId).toggleComplete(todoId);
+
+			const projects = this.listProjectNamesAndCounts();
+			em.emit('newTodoAdded', projects);
 		});
 	}
 }
