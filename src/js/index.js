@@ -1,10 +1,10 @@
 import '../css/style.css';
 import ProjectManager from './projectmanager.js';
 import DisplayController from './displaycontroller.js';
+
 // DELETE:
 import Project from './project.js';
 import ToDo from './todo.js';
-
 window.ProjectManager = ProjectManager;
 window.Project = Project;
 window.ToDo = ToDo;
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// initially populate projects list
 	const projects = pm.listProjectNamesAndCounts();
-	dc.renderProjectsList(projects);
+	dc.renderProjectsList(projects, true);
 
 	// initialize header for the default selection
 	dc.updateHeader();

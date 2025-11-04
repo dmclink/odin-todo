@@ -19,14 +19,18 @@ export default class DisplayController {
 	#todoCardTemplate = document.getElementById('todo-card-template');
 	#todosContainer = document.getElementById('todos');
 
+	// initial state for filters
 	#selectedStatusFilter = 'active';
 	#selectedSortFilter = 'due';
 	#searchFilterValue = '';
 
+	// state variables
+	#defaultProjectId;
 	#selectedProject;
 
 	constructor(defaultProjectId) {
-		this.#selectedProject = defaultProjectId;
+		this.#defaultProjectId = defaultProjectId;
+		this.#selectedProject = 'default';
 	}
 
 	set searchFilter(newVal) {
@@ -86,7 +90,8 @@ export default class DisplayController {
 	// based on the data written into the projects list. the projects list
 	// fully refreshed whenever changes are made so the data can be considered up to date
 	getSelectedNameCount() {
-		const id = this.#selectedProject;
+		const id = this.selectedProject();
+
 		const projectBtns = this.#projectsList.querySelectorAll('.projects__btn');
 
 		const selectedBtn = Array.from(projectBtns).find(
@@ -103,7 +108,9 @@ export default class DisplayController {
 
 	// returns the id of the currently selected project
 	selectedProject() {
-		return this.#selectedProject;
+		return this.#selectedProject === 'default'
+			? this.#defaultProjectId
+			: this.#selectedProject;
 	}
 
 	selectProject(id) {
@@ -123,7 +130,19 @@ export default class DisplayController {
 		this.#htmlEl.classList.toggle('dark');
 	}
 
-	renderProjectsList(projects) {
+	handleProjectButtonClick(e) {
+		const clickedBtn = e.currentTarget;
+		console.log(clickedBtn);
+		this.selectProject(clickedBtn.getAttribute('data-id'));
+
+		this.#projectsList.querySelectorAll('.projects__btn').forEach((btn) => {
+			btn.classList.remove('selected');
+		});
+
+		clickedBtn.classList.add('selected');
+	}
+
+	renderProjectsList(projects, initialBuild = false) {
 		// wipe projects list so we can fill in with updated count values and projects by appending
 		this.#projectsList.innerHTML = '';
 
@@ -147,9 +166,7 @@ export default class DisplayController {
 				btn.setAttribute('data-default-btn', 'true');
 			}
 
-			btn.addEventListener('click', () => {
-				this.selectProject(btn.getAttribute('data-id'));
-			});
+			btn.addEventListener('click', this.handleProjectButtonClick.bind(this));
 
 			this.#projectsList.appendChild(newProjectEl);
 		});
@@ -157,6 +174,12 @@ export default class DisplayController {
 		// let the 'All Projects' entry have a special icon
 		this.#projectsList.firstElementChild.querySelector('.projects__icon').src =
 			folderIconSvg;
+
+		if (initialBuild) {
+			this.#projectsList.firstElementChild
+				.querySelector('.projects__btn')
+				.classList.add('selected');
+		}
 	}
 
 	createTodoCard(todo) {

@@ -132,12 +132,15 @@ summary {
 	--c4: #252e3d;
 	--c5: #1a202c;
 	--c6: #a9b2ba;
-	--projects-highlight-color: var(--c6);
+	--c7: #a9b2ba5e;
+	--projects-hover-color: var(--c7);
+	--projects-selected-color: var(--c6);
 	--btn-radius: 7px;
 	--btn-bgc: var(--c6);
 	--btn-color: var(--c5);
 	--search-icon-color: var(--c5);
 	--todo-card-border: 1px solid var(--c4);
+	--control-width: 20px;
 }
 
 html.dark {
@@ -146,7 +149,10 @@ html.dark {
 	--c3: #2d3748;
 	--c4: #4a5568;
 	--c5: #cbd5e0;
-	--projects-highlight-color: var(--c4);
+	--c6: #a9b2ba;
+	--c7: #4a556868;
+	--projects-hover-color: var(--c7);
+	--projects-selected-color: var(--c4);
 	--btn-bgc: var(--c5);
 	--btn-color: var(--c1);
 	--search-icon-color: var(--c6);
@@ -203,16 +209,73 @@ select {
 	margin: 0 auto;
 }
 
+.dot-controls {
+	width: var(--control-width);
+	stroke: var(--c6);
+	fill: var(--c6);
+}
+
 .header,
 .projects {
 	background-color: var(--c3);
 	border: 1px solid var(--c4);
 }
 
+.button {
+	border: none;
+	border-radius: var(--btn-radius);
+	background-color: var(--btn-bgc);
+	color: var(--btn-color);
+	padding: 0.5rem 1rem;
+
+	&:hover {
+		filter: brightness(0.9);
+	}
+	&:active {
+		filter: brightness(0.8);
+	}
+}
+
 /* PROJECTS BAR */
 .projects__header-block {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	border-bottom: 1px solid var(--c4);
 	padding: 1rem;
+}
+
+.projects__menu {
+	position: relative;
+	cursor: pointer;
+}
+
+.projects__menu-dropdown {
+	display: none;
+	position: absolute;
+}
+
+.projects__menu:hover > .projects__menu-dropdown {
+	display: block;
+}
+
+.projects__menu-dropdown {
+	width: fit-content;
+}
+
+.projects__menu-item {
+	text-wrap: nowrap;
+	width: 100%;
+	text-align: left;
+	border-radius: 0;
+	border: 1px solid var(--c4);
+
+	&:first-of-type {
+		border-radius: var(--btn-radius) var(--btn-radius) 0 0;
+	}
+	&:last-of-type {
+		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
+	}
 }
 
 .projects__title {
@@ -229,7 +292,11 @@ select {
 	overflow: hidden;
 
 	:hover {
-		background-color: var(--projects-highlight-color);
+		background-color: var(--projects-hover-color);
+	}
+
+	&:has(> .projects__btn.selected) {
+		background-color: var(--projects-selected-color);
 	}
 }
 
@@ -292,21 +359,6 @@ select {
 
 .header__dark-toggle-icon {
 	width: 20px;
-}
-
-.button {
-	border: none;
-	border-radius: var(--btn-radius);
-	background-color: var(--btn-bgc);
-	color: var(--btn-color);
-	padding: 0.5rem 1rem;
-
-	&:hover {
-		filter: brightness(0.9);
-	}
-	&:active {
-		filter: brightness(0.8);
-	}
 }
 
 .header__add-btn {
@@ -446,7 +498,6 @@ select {
 }
 
 .todo-card {
-	--control-width: 20px;
 	--pd: 0.7rem;
 	background-color: var(--c2);
 	border-radius: var(--btn-radius);
@@ -471,9 +522,6 @@ select {
 }
 
 .todo-card__options {
-	width: var(--control-width);
-	stroke: var(--c6);
-	fill: var(--c6);
 	position: absolute;
 	right: var(--pd);
 	top: calc(var(--pd) * 1.5);

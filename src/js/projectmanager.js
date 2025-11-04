@@ -102,7 +102,7 @@ export default class ProjectManager {
 		});
 
 		result.unshift({
-			id: this.#defaultProject.id,
+			id: 'default',
 			name: 'All Projects',
 			count: totalCount,
 			default: true,
