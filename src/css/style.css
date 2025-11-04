@@ -137,6 +137,7 @@ summary {
 	--btn-bgc: var(--c6);
 	--btn-color: var(--c5);
 	--search-icon-color: var(--c5);
+	--todo-card-border: 1px solid var(--c4);
 }
 
 html.dark {
@@ -149,6 +150,7 @@ html.dark {
 	--btn-bgc: var(--c5);
 	--btn-color: var(--c1);
 	--search-icon-color: var(--c6);
+	--todo-card-border: none;
 }
 
 /* #endregion */
@@ -450,6 +452,7 @@ select {
 	border-radius: var(--btn-radius);
 	padding: var(--pd) calc(var(--control-width) + var(--pd) * 2);
 	position: relative;
+	border: var(--todo-card-border);
 
 	&:has(> .todo-card__status-checkbox:checked) {
 		filter: brightness(0.8);
@@ -474,4 +477,9 @@ select {
 	position: absolute;
 	right: var(--pd);
 	top: calc(var(--pd) * 1.5);
+}
+
+/* UTILS */
+.hidden {
+	display: none;
 }

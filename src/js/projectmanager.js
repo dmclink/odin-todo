@@ -160,14 +160,6 @@ export default class ProjectManager {
 	}
 
 	bindEvents() {
-		// when the user clicks either one of the filter tabs, selects a new sort,
-		// enters a query in the search bar, or adds a new todo
-		em.on('filterChange', (status, sort, search) => {
-			const todos = this.filterTodos(status, search);
-			sortTodos(sort, todos);
-			em.emit('todosUpdated', todos);
-		});
-
 		// when a user clicks the add todo button in the add todo modal
 		em.on('addTodo', (projectId, formData) => {
 			this.getProject(projectId).add(
@@ -188,6 +180,9 @@ export default class ProjectManager {
 
 			const projects = this.listProjectNamesAndCounts();
 
+			const todos = this.getAllTodos();
+
+			em.emit('todosUpdated', todos);
 			em.emit('newTodoAdded', projects);
 		});
 	}

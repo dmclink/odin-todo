@@ -3,24 +3,6 @@ import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
 
-function debounce(fn, delay = 300) {
-	let timeoutId;
-
-	return function debouncedFunc(...args) {
-		clearTimeout(timeoutId);
-
-		timeoutId = setTimeout(() => {
-			fn.apply(this, args);
-		}, delay);
-	};
-}
-
-function emitFilterChange(statusFilter, sortFilter, searchFilter) {
-	em.emit('filterChange', statusFilter, sortFilter, searchFilter);
-}
-
-const debouncedEmitFilterChange = debounce(emitFilterChange);
-
 export default class DisplayController {
 	// cached selectors
 	#projectsList = document.querySelector('#projects__list');
@@ -41,7 +23,6 @@ export default class DisplayController {
 	#selectedSortFilter = 'due';
 	#searchFilterValue = '';
 
-	// TODO: this is a problem when adding default project associated project id to todos
 	#selectedProject;
 
 	constructor(defaultProjectId) {
@@ -191,11 +172,7 @@ export default class DisplayController {
 			.querySelector('.todo-card__status-checkbox')
 			.addEventListener('change', () => {
 				em.emit('changeTodoStatus', todo.projectId, todo.id);
-				debouncedEmitFilterChange(
-					this.statusFilter,
-					this.sortFilter,
-					this.searchFilter
-				);
+				this.filterDisplayedTodos();
 			});
 
 		todoCard.querySelector('.todo-card__title').textContent = todo.title;
@@ -207,12 +184,70 @@ export default class DisplayController {
 		return todoCard;
 	}
 
-	displayTodos(todos) {
+	/** Removes hidden class from a todo if it passes both status and search filter checks.
+	 * Assumes hidden class has been applied todo element already.
+	 * @param {HTMLElement} todo - the todo element to filter
+	 */
+	filterTodo(todo) {
+		let containsStatus = false;
+		if (this.statusFilter === 'all') {
+			containsStatus = true;
+		} else {
+			const todoIsComplete = todo.querySelector(
+				'.todo-card__status-checkbox'
+			).checked;
+			const statusFilterComplete = this.statusFilter === 'complete';
+
+			containsStatus = todoIsComplete === statusFilterComplete;
+		}
+
+		let containsSearch = false;
+		if (!this.searchFilter) {
+			containsSearch = true;
+		} else {
+			const title = todo.querySelector('.todo-card__title').textContent;
+			const description = todo.querySelector(
+				'.todo-card__description'
+			).textContent;
+			const notes = todo.querySelector('.todo-card__notes').textContent;
+
+			if (
+				title.includes(this.searchFilter) ||
+				description.includes(this.searchFilter) ||
+				notes.includes(this.searchFilter)
+			) {
+				containsSearch = true;
+			}
+		}
+
+		if (containsSearch && containsStatus) {
+			todo.classList.remove('hidden');
+		}
+	}
+
+	/** Only shows todos with the completion status given. Optional search param will
+	 * further filter todos that contain a match of the input in the title, description,
+	 * or notes of the todo. If empty string is entered to search, it is skipped.
+	 */
+	filterDisplayedTodos() {
+		const todos = this.#todosContainer.querySelectorAll('.todo-card');
+		todos.forEach((todo) => {
+			todo.classList.add('hidden');
+		});
+
+		todos.forEach((todo) => {
+			this.filterTodo(todo);
+		});
+	}
+
+	buildTodos(todos) {
 		this.#todosContainer.innerHTML = '';
 		for (const todo of todos) {
 			const todoCard = this.createTodoCard(todo);
 			this.#todosContainer.appendChild(todoCard);
 		}
+
+		this.filterDisplayedTodos();
 	}
 
 	bindEvents() {
@@ -255,46 +290,30 @@ export default class DisplayController {
 		this.#statusFilterBtns.forEach((btn) => {
 			btn.addEventListener('click', () => {
 				this.selectStatusFilter(btn);
-				debouncedEmitFilterChange(
-					this.statusFilter,
-					this.sortFilter,
-					this.searchFilter
-				);
+				this.filterDisplayedTodos();
 			});
 		});
 
 		// bind event listener for selecting sort filters
 		this.#sortFilterSelectEl.addEventListener('change', (e) => {
 			this.sortFilter = e.target.value;
-			debouncedEmitFilterChange(
-				this.statusFilter,
-				this.sortFilter,
-				this.searchFilter
-			);
+			this.filterDisplayedTodos();
 		});
 
 		// event listener for search bar inputs
 		this.#searchFilterBar.addEventListener('input', (e) => {
 			this.searchFilter = e.target.value;
 
-			debouncedEmitFilterChange(
-				this.statusFilter,
-				this.sortFilter,
-				this.searchFilter
-			);
+			this.filterDisplayedTodos();
 		});
 
-		em.on('todosUpdated', this.displayTodos.bind(this));
+		em.on('todosUpdated', this.buildTodos.bind(this));
 
 		em.on('newTodoAdded', (projects) => {
 			this.renderProjectsList(projects);
 			this.updateHeader();
 			this.closeModal();
-			debouncedEmitFilterChange(
-				this.statusFilter,
-				this.sortFilter,
-				this.searchFilter
-			);
+			this.filterDisplayedTodos();
 		});
 	}
 }
