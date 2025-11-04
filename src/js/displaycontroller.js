@@ -107,7 +107,7 @@ export default class DisplayController {
 	getSelectedNameCount() {
 		const id = this.#selectedProject;
 		const projectBtns = this.#projectsList.querySelectorAll('.projects__btn');
-		console.log(id);
+
 		const selectedBtn = Array.from(projectBtns).find(
 			(btn) =>
 				!btn.hasAttribute('data-default-btn') &&
@@ -180,10 +180,23 @@ export default class DisplayController {
 
 	createTodoCard(todo) {
 		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
-		// TODO: not working because cloned node is DocumentFragment type
-		console.log(todoCard);
 		todoCard.firstElementChild.setAttribute('data-id', todo.id);
 		todoCard.firstElementChild.setAttribute('data-project-id', todo.projectId);
+
+		if (todo.complete) {
+			todoCard.querySelector('.todo-card__status-checkbox').checked = true;
+		}
+
+		todoCard
+			.querySelector('.todo-card__status-checkbox')
+			.addEventListener('change', () => {
+				em.emit('changeTodoStatus', todo.projectId, todo.id);
+				debouncedEmitFilterChange(
+					this.statusFilter,
+					this.sortFilter,
+					this.searchFilter
+				);
+			});
 
 		todoCard.querySelector('.todo-card__title').textContent = todo.title;
 		todoCard.querySelector('.todo-card__due-date').textContent = todo.dueDate;

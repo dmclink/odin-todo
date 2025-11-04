@@ -43,6 +43,17 @@ export default class Project {
 		this.#count--;
 	}
 
+	/** Returns the ToDo object of the todo with matching id. IDs should
+	 * be unique and only one should match. May return undefined if no matching
+	 * todo is in this project.
+	 *
+	 * @param {string} id - ID of todo to lookup and match
+	 * @returns {ToDo|undefined} - object of the found todo
+	 */
+	getTodo(id) {
+		return this.#todos.find((todo) => todo.id === id);
+	}
+
 	get id() {
 		return this.#id;
 	}
