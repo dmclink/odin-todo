@@ -16,6 +16,7 @@ function comparePriority(pri1, pri2) {
 	return pri1Val < pri2Val;
 }
 
+// TODO: push this to display controller
 function sortTodos(sortMethod, todos) {
 	switch (sortMethod) {
 		case 'due':
@@ -173,17 +174,17 @@ export default class ProjectManager {
 				)
 			);
 
-			// emits whenever a todo's status checkbox is clicked
-			em.on('changeTodoStatus', (projectId, todoId) => {
-				this.getProject(projectId).getTodo(todoId).toggleComplete();
-			});
-
 			const projects = this.listProjectNamesAndCounts();
 
 			const todos = this.getAllTodos();
 
 			em.emit('todosUpdated', todos);
 			em.emit('newTodoAdded', projects);
+		});
+
+		// emits whenever a todo's status checkbox is clicked
+		em.on('changeTodoStatus', (projectId, todoId) => {
+			this.getProject(projectId).toggleComplete(todoId);
 		});
 	}
 }

@@ -113,13 +113,15 @@ export default class DisplayController {
 			: this.#selectedProject;
 	}
 
+	// stores the id given to the private selected project id field
+	// and refresh header with the selected project
 	selectProject(id) {
 		this.#selectedProject = id;
-		// TODO: update highlight class on projects list
 
 		this.updateHeader();
 	}
 
+	// turns dark mode on or off and swaps the toggle icon
 	toggleDarkMode() {
 		if (this.#htmlEl.classList.contains('dark')) {
 			this.#darkToggleIcon.src = lightIconSvg;
@@ -132,7 +134,6 @@ export default class DisplayController {
 
 	handleProjectButtonClick(e) {
 		const clickedBtn = e.currentTarget;
-		console.log(clickedBtn);
 		this.selectProject(clickedBtn.getAttribute('data-id'));
 
 		this.#projectsList.querySelectorAll('.projects__btn').forEach((btn) => {
@@ -182,6 +183,11 @@ export default class DisplayController {
 		}
 	}
 
+	/** Creates an HTML element from the todo-card-template and writes the given data to it
+	 *
+	 * @param {ToDo} todo - the object that holds the data we will write to the new HTML element
+	 * @returns {HTMLElement} - the built todo-card element
+	 */
 	createTodoCard(todo) {
 		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
 		todoCard.firstElementChild.setAttribute('data-id', todo.id);
@@ -204,6 +210,7 @@ export default class DisplayController {
 		todoCard.querySelector('.todo-card__description').textContent =
 			todo.description;
 		todoCard.querySelector('.todo-card__notes').textContent = todo.notes;
+
 		return todoCard;
 	}
 
@@ -261,6 +268,8 @@ export default class DisplayController {
 		todos.forEach((todo) => {
 			this.filterTodo(todo);
 		});
+
+		// TODO: need sort here! move from projectmanager.js
 	}
 
 	buildTodos(todos) {

@@ -39,8 +39,32 @@ export default class Project {
 			throw new Error('non existing id passed to remove');
 		}
 
-		this.#todos.splice(idx, 1);
-		this.#count--;
+		const [removedTodo] = this.#todos.splice(idx, 1);
+
+		if (!removedTodo.completed) {
+			this.#count--;
+		}
+	}
+
+	/** Toggles completion status for the todo with the given id and updates
+	 * the project's count depending on its completion status.
+	 *
+	 * @param {string} id - the id of the todo to lookup and toggle status
+	 */
+	toggleComplete(id) {
+		const todo = this.getTodo(id);
+
+		if (!todo) {
+			throw new Error('no todo with given id:', id);
+		}
+
+		if (todo.complete) {
+			this.#count++;
+		} else {
+			this.#count--;
+		}
+
+		todo.toggleComplete();
 	}
 
 	/** Returns the ToDo object of the todo with matching id. IDs should
