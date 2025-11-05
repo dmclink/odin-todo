@@ -146,6 +146,10 @@ export default class DisplayController {
 
 	handleProjectButtonClick(e) {
 		const clickedBtn = e.currentTarget;
+		if (clickedBtn.hasAttribute('aria-selected')) {
+			return;
+		}
+
 		this.selectProject(clickedBtn.getAttribute('data-id'));
 
 		this.#projectsList.querySelectorAll('.projects__btn').forEach((btn) => {
@@ -153,6 +157,12 @@ export default class DisplayController {
 		});
 
 		clickedBtn.setAttribute('aria-selected', 'true');
+
+		this.#projectsList
+			.querySelectorAll('.projects__menu-checkbox')
+			.forEach((checkbox) => {
+				checkbox.checked = false;
+			});
 	}
 
 	renderProjectsList(projects, initialBuild = false) {
@@ -181,15 +191,36 @@ export default class DisplayController {
 
 			btn.addEventListener('click', this.handleProjectButtonClick.bind(this));
 
+			btn
+				.querySelector('.projects__menu-checkbox')
+				.addEventListener('change', (e) => {
+					e.preventDefault();
+					const thisCheckbox = e.currentTarget;
+					const keepChecked = thisCheckbox.checked;
+
+					this.#projectsList
+						.querySelectorAll('.projects__menu-checkbox')
+						.forEach((checkbox) => {
+							checkbox.checked = false;
+						});
+
+					if (keepChecked) {
+						e.currentTarget.checked = true;
+					}
+				});
+
 			this.#projectsList.appendChild(newProjectEl);
 		});
 
 		// let the 'All Projects' entry have a special icon
-		this.#projectsList.firstElementChild.querySelector('.projects__icon').src =
-			folderIconSvg;
+		const allProjectsBtn = this.#projectsList.firstElementChild;
+		allProjectsBtn.querySelector('.projects__icon').src = folderIconSvg;
+		console.log(allProjectsBtn.querySelector('.projects__menu'));
+		// allProjectsBtn.querySelector('.projects__menu').style.visibilty = 'hidden';
+		allProjectsBtn.querySelector('.projects__menu-checkbox').disabled = true;
 
 		if (initialBuild) {
-			this.#projectsList.firstElementChild
+			allProjectsBtn
 				.querySelector('.projects__btn')
 				.setAttribute('aria-selected', 'true');
 		}

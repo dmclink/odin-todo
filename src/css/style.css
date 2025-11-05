@@ -245,45 +245,15 @@ select {
 	padding: 1rem;
 }
 
-.projects__menu {
-	position: relative;
-	cursor: pointer;
-}
-
-.projects__menu-dropdown {
-	display: none;
-	position: absolute;
-}
-
-.projects__menu:hover > .projects__menu-dropdown {
-	display: block;
-}
-
-.projects__menu-dropdown {
-	width: fit-content;
-}
-
-.projects__menu-item {
-	text-wrap: nowrap;
-	width: 100%;
-	text-align: left;
-	border-radius: 0;
-	border: 1px solid var(--c4);
-
-	&:first-of-type {
-		border-radius: var(--btn-radius) var(--btn-radius) 0 0;
-	}
-	&:last-of-type {
-		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
-	}
-}
-
 .projects__title {
 	font-size: 1.5rem;
 }
 
 .projects__list {
 	padding: 1rem;
+	gap: 0.7rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .projects__li {
@@ -321,6 +291,43 @@ select {
 
 .projects__todo-count {
 	margin-left: auto;
+}
+
+.projects__menu {
+	cursor: pointer;
+}
+
+/* take the project control out of view for the All Projects button */
+.projects__li:first-of-type .projects__menu {
+	visibility: hidden;
+}
+
+.projects__menu-checkbox {
+	display: none;
+}
+
+.projects__menu-label {
+	cursor: pointer;
+}
+
+.projects__menu-dropdown {
+	display: none;
+}
+
+.projects__li:has(.projects__menu-checkbox:checked) .projects__menu-dropdown {
+	display: block;
+}
+
+.projects__menu-item {
+	text-wrap: nowrap;
+	width: 100%;
+	text-align: left;
+	border-radius: 0;
+	border: 1px solid var(--c4);
+
+	&:last-of-type {
+		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
+	}
 }
 
 /* HEADER */
@@ -508,6 +515,10 @@ select {
 	&:has(> .todo-card__status-checkbox:checked) {
 		filter: brightness(0.8);
 	}
+}
+
+.todo-card:has(> .todo-card__status-checkbox:checked) > .todo-card__title {
+	text-decoration: line-through;
 }
 
 .todo-card__title {
