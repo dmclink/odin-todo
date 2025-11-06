@@ -498,8 +498,15 @@ export default class DisplayController {
 			.querySelector('#change-name__change')
 			.addEventListener('click', (e) => {
 				const projectId = e.currentTarget.getAttribute('data-id');
-				const newName =
-					this.#changeNameModal.querySelector('#change-name__name').value;
+				const nameInput =
+					this.#changeNameModal.querySelector('#change-name__name');
+				const newName = nameInput.value;
+
+				if (!newName) {
+					nameInput.setCustomValidity('Name is required');
+					nameInput.reportValidity();
+					return;
+				}
 
 				em.emit('changeName', projectId, newName);
 
@@ -581,7 +588,7 @@ export default class DisplayController {
 
 		this.#newProjectModal
 			.querySelector('#new-project__cancel')
-			.addEventListener('click', (e) => {
+			.addEventListener('click', () => {
 				this.#newProjectModal.close();
 			});
 

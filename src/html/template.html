@@ -93,12 +93,16 @@
 
     <!-- modal for deleting project -->
     <dialog class="delete-project" id="delete-project">
-      <h2 class="delete-project__title">Delete project:</h2>
-      <!-- will be filled via js when modal is shown -->
-      <p class="delete-project__name dialog-project-name"></p>
+      <h2 class="delete-project__title">Delete Project</h2>
+      <div class="dialog-project-text">
+        <p>Selected project:</p>
+        <!-- will be filled via js when modal is shown -->
+        <p class="delete-project__name dialog-project-name"></p>
+        <p></p>
+      </div>
 
       <form>
-        <p class="delete-project__warning">All notes and data associated with this project will be lost.</p>
+        <p class="delete-project__warning">WARNING! All notes and data associated with this project will be lost.</p>
         <div class="dialog-btn-controls">
           <button type="button" class="button delete-project__btn delete-project__cancel"
             id="delete-project__cancel">Cancel</button>
@@ -110,13 +114,17 @@
 
     <!-- modal for changing the project name -->
     <dialog class="change-name" id="change-name">
-      <h2 class="change-name__title">Change name for project:</h2>
-      <!-- will be filled via js when modal is shown -->
-      <p class="change-name__project-name dialog-project-name"></p>
+      <h2 class="change-name__title">Change Name</h2>
+      <div class="dialog-project-text">
+        <p>Selected project:</p>
+        <!-- will be filled via js when modal is shown -->
+        <p class="change-name__project-name dialog-project-name"></p>
+        <p></p>
+      </div>
 
       <form>
         <label for="change-name__name">
-          <div class="required-label">Name:<span class="required-text"> *required</span></div>
+          <div class="required-label">New Name:<span class="required-text"> *required</span></div>
           <input class="form-control" type="text" name="name" id="change-name__name" required>
         </label>
 
@@ -198,7 +206,7 @@
       <div class="container todos" id="todos">
         <template id="todo-card-template">
           <div class="todo-card">
-            <!-- controls -->
+            <!-- todo controls -->
             <input type="checkbox" class="todo-card__status-checkbox">
             <!-- TODO: wrap in a checkbox for dropdown? -->
             <svg class="todo-card__options dot-controls" viewBox="0 0 32 32" version="1.1"

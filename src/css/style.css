@@ -262,6 +262,20 @@ dialog h2 {
 	text-align: center;
 }
 
+.dialog-project-text {
+	margin-bottom: 0.5rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.dialog-project-name {
+	display: inline-block;
+	margin-left: 1rem;
+	text-align: center;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
 .form-control {
 	background-color: var(--c3);
 	padding: 0.3rem 0.6rem;
