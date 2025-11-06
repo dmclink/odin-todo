@@ -13,6 +13,7 @@
       <h1 class="projects__title">
         Projects
       </h1>
+      <button class="projects__new-project" id="projects__new-project">+</button>
     </div>
     <ul class="projects__list" id="projects__list">
       <template id="projects__li-template">
@@ -71,6 +72,20 @@
   </header>
 
   <main class="main">
+    <!-- modal for adding new project -->
+    <dialog class="new-project" id="new-project">
+      <h2 class="new-project__title">Add new project</h2>
+      <label class="new-project__label" for="new-project__name">Name:
+        <input type="text" class="new-project__name" id="new-project__name">
+      </label>
+
+      <div class="new-project__btn-controls">
+        <button type="button" class="button new-project__btn new-project__cancel"
+          id="new-project__cancel">Cancel</button>
+        <button type="button" class="button new-project__btn new-project__add" id="new-project__add">Add</button>
+      </div>
+    </dialog>
+
     <!-- modal for deleting project -->
     <dialog class="delete-project" id="delete-project">
       <h2 class="delete-project__title">Delete project:</h2>

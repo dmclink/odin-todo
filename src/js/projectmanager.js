@@ -159,20 +159,29 @@ export default class ProjectManager {
 
 		em.on('changeName', (projectId, newName) => {
 			this.changeName(projectId, newName);
+
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
 		});
 
 		em.on('deleteProject', (id) => {
 			this.remove(id);
-			const projects = this.listProjectNamesAndCounts();
 
+			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
 		});
 
 		em.on('setDefault', (id) => {
-			// this function call will result in emit 'newTodoAdded' event
+			// this function call will result in emit 'newTodoAdded' event refreshing projects
+			// on the frontend
 			this.setDefaultProject(id);
+		});
+
+		em.on('newProject', (name) => {
+			this.addProject(name);
+
+			const projects = this.listProjectNamesAndCounts();
+			em.emit('newTodoAdded', projects);
 		});
 	}
 }

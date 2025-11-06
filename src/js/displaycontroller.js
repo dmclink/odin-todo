@@ -35,6 +35,8 @@ export default class DisplayController {
 	#todosContainer = document.getElementById('todos');
 	#changeNameModal = document.getElementById('change-name');
 	#deleteProjectModal = document.getElementById('delete-project');
+	#newProjectModal = document.getElementById('new-project');
+	#addNewProjectBtn = document.getElementById('projects__new-project');
 
 	// initial state for filters
 	#selectedStatusFilter = 'active';
@@ -265,10 +267,9 @@ export default class DisplayController {
 			e.preventDefault();
 
 			const projectId = btn.getAttribute('data-id');
+			this.#defaultProjectId = projectId;
 
 			em.emit('setDefault', projectId);
-
-			this.#defaultProjectId = projectId;
 		});
 	}
 
@@ -566,6 +567,41 @@ export default class DisplayController {
 
 			this.filterDisplayedTodos();
 		});
+
+		// event listeners for adding new projects button and modals
+		this.#addNewProjectBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			this.#newProjectModal.showModal();
+		});
+
+		this.#newProjectModal.addEventListener('close', () => {
+			this.#newProjectModal.querySelector('#new-project__name').value = '';
+		});
+
+		this.#newProjectModal
+			.querySelector('#new-project__cancel')
+			.addEventListener('click', (e) => {
+				this.#newProjectModal.close();
+			});
+
+		this.#newProjectModal
+			.querySelector('#new-project__add')
+			.addEventListener('click', (e) => {
+				e.preventDefault();
+
+				const nameInput =
+					this.#newProjectModal.querySelector('#new-project__name');
+				const newName = nameInput.value;
+				if (!newName) {
+					nameInput.setCustomValidity('Name is required');
+					nameInput.reportValidity();
+					return;
+				}
+
+				em.emit('newProject', newName);
+				this.#newProjectModal.close();
+			});
 
 		em.on('todosUpdated', this.buildTodos.bind(this));
 
