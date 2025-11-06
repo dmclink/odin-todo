@@ -31,6 +31,10 @@ export default class ProjectManager {
 		this.#projects.delete(id);
 	}
 
+	changeName(id, newName) {
+		this.getProject(id).name = newName;
+	}
+
 	/** Returns project with inputted id. If no project exists or no projectId is inputted,
 	 * returns the default project.
 	 *
@@ -146,6 +150,12 @@ export default class ProjectManager {
 		em.on('changeTodoStatus', (projectId, todoId) => {
 			this.getProject(projectId).toggleComplete(todoId);
 
+			const projects = this.listProjectNamesAndCounts();
+			em.emit('newTodoAdded', projects);
+		});
+
+		em.on('changeName', (projectId, newName) => {
+			this.changeName(projectId, newName);
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
 		});

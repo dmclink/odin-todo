@@ -42,10 +42,10 @@
             </div>
           </div>
           <div class="projects__menu-dropdown">
-            <button type="button" class="button projects__menu-item">Change Name</button>
-            <button type="button" class="button projects__menu-item">Delete Project</button>
-            <button type="button" class="button projects__menu-item">Make Default</button>
-          </div>
+            <button type="button" class="button projects__menu-item" value="name">Change Name</button>
+            <button type="button" class="button projects__menu-item" value="delete">Delete Project</button>
+            <button type="button" class="button projects__menu-item" value="default">Make Default</button>
+            <value>
         </li>
       </template>
 
@@ -71,6 +71,21 @@
   </header>
 
   <main class="main">
+    <!-- modal for changing the project  -->
+    <dialog class="change-name" id="change-name">
+      <h2 class="change-name__title">Change name for project:</h2>
+      <!-- will be filled via js when modal is shown -->
+      <p class="change-name__project-name"></p>
+      <input class="change-name__form-control" type="text" name="name" id="change-name__name" required>
+
+      <div class="change-name__btn-controls">
+        <button type="button" class="button change-name__btn change-name__cancel"
+          id="change-name__cancel">Cancel</button>
+        <button type="button" class="button change-name__btn change-name__change" id="change-name__change"
+          data-id="">Change</button>
+      </div>
+    </dialog>
+
     <dialog class="new-todo" id="new-todo">
       <h2 class="new-todo__title">Add ToDo</h2>
 

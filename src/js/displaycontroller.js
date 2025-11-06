@@ -2,6 +2,7 @@ import em from '../js/events.js';
 import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
+import starIconSvg from '../img/star.svg';
 
 const priorityMap = {
 	high: 3,
@@ -32,6 +33,7 @@ export default class DisplayController {
 	#searchFilterBar = document.querySelector('#search');
 	#todoCardTemplate = document.getElementById('todo-card-template');
 	#todosContainer = document.getElementById('todos');
+	#changeNameModal = document.getElementById('change-name');
 
 	// initial state for filters
 	#selectedStatusFilter = 'active';
@@ -165,51 +167,93 @@ export default class DisplayController {
 			});
 	}
 
+	handleProjectCheckboxChange(e) {
+		e.preventDefault();
+		const thisCheckbox = e.currentTarget;
+		const keepChecked = thisCheckbox.checked;
+
+		this.#projectsList
+			.querySelectorAll('.projects__menu-checkbox')
+			.forEach((checkbox) => {
+				checkbox.checked = false;
+			});
+
+		if (keepChecked) {
+			e.currentTarget.checked = true;
+		}
+	}
+
+	buildProjectButton(project) {
+		const newProjectEl = this.#projectsListItemTemplate.content.cloneNode(true);
+
+		newProjectEl.querySelector('.projects__project-name').textContent =
+			project.name;
+
+		const todoCount = newProjectEl.querySelector('.projects__todo-count');
+
+		todoCount.textContent = project.count;
+
+		const btn = newProjectEl.querySelector('.projects__btn');
+		btn.setAttribute('data-id', project.id || '');
+		btn.setAttribute('data-name', project.name || '');
+		btn.setAttribute('data-count', project.count || '0');
+		if (project.default) {
+			btn.setAttribute('data-default-btn', 'true');
+		}
+
+		btn.addEventListener('click', this.handleProjectButtonClick.bind(this));
+
+		btn
+			.querySelector('.projects__menu-checkbox')
+			.addEventListener('change', this.handleProjectCheckboxChange.bind(this));
+
+		return newProjectEl.firstElementChild;
+	}
+
+	bindProjectButtonMenuListeners(liElement) {
+		console.log(liElement);
+		const btn = liElement.querySelector('.projects__btn');
+		console.log(btn);
+		const changeNameBtn = liElement.querySelector(
+			'.projects__menu-item[value="name"]'
+		);
+		const deleteProjectBtn = liElement.querySelector(
+			'.projects__menu-item[value="delete"]'
+		);
+		const makeDefaultBtn = liElement.querySelector(
+			'.projects__menu-item[value="default"]'
+		);
+
+		changeNameBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			console.log(btn);
+			const projectId = btn.getAttribute('data-id');
+			const currentName = btn.getAttribute('data-name');
+			this.#changeNameModal.querySelector(
+				'.change-name__project-name'
+			).textContent = currentName;
+
+			// overwrite the projectId with the project the user is trying to
+			// modify so the event listener can pull from this attribute
+			this.#changeNameModal
+				.querySelector('.change-name__change')
+				.setAttribute('data-id', projectId);
+
+			this.#changeNameModal.showModal();
+		});
+
+		// TODO: implement listeners on the other two buttons
+	}
+
 	renderProjectsList(projects, initialBuild = false) {
 		// wipe projects list so we can fill in with updated count values and projects by appending
 		this.#projectsList.innerHTML = '';
 
 		// create a new element for each input project and append it to list
 		projects.forEach((project) => {
-			const newProjectEl =
-				this.#projectsListItemTemplate.content.cloneNode(true);
-
-			newProjectEl.querySelector('.projects__project-name').textContent =
-				project.name;
-
-			const todoCount = newProjectEl.querySelector('.projects__todo-count');
-
-			todoCount.textContent = project.count;
-
-			const btn = newProjectEl.querySelector('.projects__btn');
-			btn.setAttribute('data-id', project.id || '');
-			btn.setAttribute('data-name', project.name || '');
-			btn.setAttribute('data-count', project.count || '0');
-			if (project.default) {
-				btn.setAttribute('data-default-btn', 'true');
-			}
-
-			btn.addEventListener('click', this.handleProjectButtonClick.bind(this));
-
-			btn
-				.querySelector('.projects__menu-checkbox')
-				.addEventListener('change', (e) => {
-					e.preventDefault();
-					const thisCheckbox = e.currentTarget;
-					const keepChecked = thisCheckbox.checked;
-
-					this.#projectsList
-						.querySelectorAll('.projects__menu-checkbox')
-						.forEach((checkbox) => {
-							checkbox.checked = false;
-						});
-
-					if (keepChecked) {
-						e.currentTarget.checked = true;
-					}
-				});
-
-			this.#projectsList.appendChild(newProjectEl);
+			const projectEl = this.buildProjectButton(project);
+			this.bindProjectButtonMenuListeners(projectEl);
+			this.#projectsList.appendChild(projectEl);
 		});
 
 		// let the 'All Projects' entry have a special icon
@@ -218,6 +262,21 @@ export default class DisplayController {
 		console.log(allProjectsBtn.querySelector('.projects__menu'));
 		// allProjectsBtn.querySelector('.projects__menu').style.visibilty = 'hidden';
 		allProjectsBtn.querySelector('.projects__menu-checkbox').disabled = true;
+
+		this.#projectsList.querySelectorAll('.projects__li').forEach((project) => {
+			if (
+				project.querySelector('.projects__btn').getAttribute('data-id') ===
+				this.#defaultProjectId
+			) {
+				project.querySelector('.projects__icon').src = starIconSvg;
+
+				const defaultBtn = project.querySelector(
+					'.projects__menu-item[value="default"]'
+				);
+				defaultBtn.disabled = true;
+				defaultBtn.textContent = 'Already Default';
+			}
+		});
 
 		if (initialBuild) {
 			allProjectsBtn
@@ -387,6 +446,28 @@ export default class DisplayController {
 
 			em.emit('addTodo', projectId, formData);
 		});
+
+		this.#changeNameModal.addEventListener('close', () => {
+			this.#changeNameModal.querySelector('#change-name__name').value = '';
+		});
+
+		this.#changeNameModal
+			.querySelector('#change-name__cancel')
+			.addEventListener('click', () => {
+				this.#changeNameModal.close();
+			});
+
+		this.#changeNameModal
+			.querySelector('#change-name__change')
+			.addEventListener('click', (e) => {
+				const projectId = e.currentTarget.getAttribute('data-id');
+				const newName =
+					this.#changeNameModal.querySelector('#change-name__name').value;
+
+				em.emit('changeName', projectId, newName);
+
+				this.#changeNameModal.close();
+			});
 
 		// bind event for dark mode toggle button
 		document
