@@ -13,8 +13,9 @@
       <h1 class="projects__title">
         Projects
       </h1>
-      <button class="projects__new-project" id="projects__new-project">+</button>
+      <button class="button projects__new-project" id="projects__new-project">+</button>
     </div>
+
     <ul class="projects__list" id="projects__list">
       <template id="projects__li-template">
         <li class="projects__li">
@@ -74,46 +75,58 @@
   <main class="main">
     <!-- modal for adding new project -->
     <dialog class="new-project" id="new-project">
-      <h2 class="new-project__title">Add new project</h2>
-      <label class="new-project__label" for="new-project__name">Name:
-        <input type="text" class="new-project__name" id="new-project__name">
-      </label>
+      <h2 class="new-project__title">Add New Project</h2>
 
-      <div class="new-project__btn-controls">
-        <button type="button" class="button new-project__btn new-project__cancel"
-          id="new-project__cancel">Cancel</button>
-        <button type="button" class="button new-project__btn new-project__add" id="new-project__add">Add</button>
-      </div>
+      <form>
+        <label class="new-project__label required-label" for="new-project__name">
+          <div class="required-label">Name:<span class="required-text"> *required</span></div>
+          <input type="text" class="new-project__name" id="new-project__name">
+        </label>
+
+        <div class="dialog-btn-controls">
+          <button type="button" class="button new-project__btn new-project__cancel"
+            id="new-project__cancel">Cancel</button>
+          <button type="button" class="button new-project__btn new-project__add" id="new-project__add">Add</button>
+        </div>
+      </form>
     </dialog>
 
     <!-- modal for deleting project -->
     <dialog class="delete-project" id="delete-project">
       <h2 class="delete-project__title">Delete project:</h2>
       <!-- will be filled via js when modal is shown -->
-      <p class="delete-project__name"></p>
-      <p class="delete-project__warning">All notes and data associated with this project will be lost.</p>
+      <p class="delete-project__name dialog-project-name"></p>
 
-      <div class="delete-project__btn-controls">
-        <button type="button" class="button delete-project__btn delete-project__cancel"
-          id="delete-project__cancel">Cancel</button>
-        <button type="button" class="button delete-project__btn delete-project__delete" id="delete-project__delete"
-          data-id="">Delete</button>
-      </div>
+      <form>
+        <p class="delete-project__warning">All notes and data associated with this project will be lost.</p>
+        <div class="dialog-btn-controls">
+          <button type="button" class="button delete-project__btn delete-project__cancel"
+            id="delete-project__cancel">Cancel</button>
+          <button type="button" class="button delete-project__btn delete-project__delete" id="delete-project__delete"
+            data-id="">Delete</button>
+        </div>
+      </form>
     </dialog>
 
-    <!-- modal for changing the project  -->
+    <!-- modal for changing the project name -->
     <dialog class="change-name" id="change-name">
       <h2 class="change-name__title">Change name for project:</h2>
       <!-- will be filled via js when modal is shown -->
-      <p class="change-name__project-name"></p>
-      <input class="change-name__form-control" type="text" name="name" id="change-name__name" required>
+      <p class="change-name__project-name dialog-project-name"></p>
 
-      <div class="change-name__btn-controls">
-        <button type="button" class="button change-name__btn change-name__cancel"
-          id="change-name__cancel">Cancel</button>
-        <button type="button" class="button change-name__btn change-name__change" id="change-name__change"
-          data-id="">Change</button>
-      </div>
+      <form>
+        <label for="change-name__name">
+          <div class="required-label">Name:<span class="required-text"> *required</span></div>
+          <input class="form-control" type="text" name="name" id="change-name__name" required>
+        </label>
+
+        <div class="dialog-btn-controls">
+          <button type="button" class="button change-name__btn change-name__cancel"
+            id="change-name__cancel">Cancel</button>
+          <button type="button" class="button change-name__btn change-name__change" id="change-name__change"
+            data-id="">Change</button>
+        </div>
+      </form>
     </dialog>
 
     <dialog class="new-todo" id="new-todo">
@@ -122,11 +135,11 @@
       <form class="new-todo__form" id="new-todo__form">
         <label for="new-todo__name">
           <div class="required-label">Name:<span class="required-text"> *required</span></div>
-          <input class="new-todo__form-control" type="text" name="name" id="new-todo__name" required>
+          <input class="form-control" type="text" name="name" id="new-todo__name" required>
         </label>
 
         <label for="new-todo__description">Description:
-          <input class="new-todo__form-control" type="text" name="description" id="new-todo__description">
+          <input class="form-control" type="text" name="description" id="new-todo__description">
         </label>
 
         <label for="new-todo__due-date">Due Date:
@@ -134,7 +147,7 @@
         </label>
 
         <label for="new-todo__priority">Priority:
-          <select class="new-todo__form-control" name="priority" id="new-todo__priority">
+          <select class="form-control" name="priority" id="new-todo__priority">
             <option value="" selected>N/A</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
@@ -143,11 +156,10 @@
         </label>
 
         <label for="new-todo__notes">Notes:
-          <textarea class="new-todo__form-control" name="notes" class="new-todo__notes" id="new-todo__notes"
-            rows="6"></textarea>
+          <textarea class="form-control" name="notes" class="new-todo__notes" id="new-todo__notes" rows="6"></textarea>
         </label>
 
-        <div class="new-todo__btn-controls">
+        <div class="dialog-btn-controls">
           <button type="button" class="button new-todo__btn new-todo__cancel" id="new-todo__cancel">Cancel</button>
           <button type="button" class="button new-todo__btn new-todo__add" id="new-todo__add">Add</button>
         </div>
