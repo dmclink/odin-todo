@@ -71,6 +71,21 @@
   </header>
 
   <main class="main">
+    <!-- modal for deleting project -->
+    <dialog class="delete-project" id="delete-project">
+      <h2 class="delete-project__title">Delete project:</h2>
+      <!-- will be filled via js when modal is shown -->
+      <p class="delete-project__name"></p>
+      <p class="delete-project__warning">All notes and data associated with this project will be lost.</p>
+
+      <div class="delete-project__btn-controls">
+        <button type="button" class="button delete-project__btn delete-project__cancel"
+          id="delete-project__cancel">Cancel</button>
+        <button type="button" class="button delete-project__btn delete-project__delete" id="delete-project__delete"
+          data-id="">Delete</button>
+      </div>
+    </dialog>
+
     <!-- modal for changing the project  -->
     <dialog class="change-name" id="change-name">
       <h2 class="change-name__title">Change name for project:</h2>

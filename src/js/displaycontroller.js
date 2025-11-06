@@ -34,6 +34,7 @@ export default class DisplayController {
 	#todoCardTemplate = document.getElementById('todo-card-template');
 	#todosContainer = document.getElementById('todos');
 	#changeNameModal = document.getElementById('change-name');
+	#deleteProjectModal = document.getElementById('delete-project');
 
 	// initial state for filters
 	#selectedStatusFilter = 'active';
@@ -226,7 +227,7 @@ export default class DisplayController {
 
 		changeNameBtn.addEventListener('click', (e) => {
 			e.preventDefault();
-			console.log(btn);
+
 			const projectId = btn.getAttribute('data-id');
 			const currentName = btn.getAttribute('data-name');
 			this.#changeNameModal.querySelector(
@@ -242,7 +243,33 @@ export default class DisplayController {
 			this.#changeNameModal.showModal();
 		});
 
-		// TODO: implement listeners on the other two buttons
+		deleteProjectBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			const projectId = btn.getAttribute('data-id');
+			const currentName = btn.getAttribute('data-name');
+			this.#deleteProjectModal.querySelector(
+				'.delete-project__name'
+			).textContent = currentName;
+
+			// overwrite the projectId with the project the user is trying to
+			// modify so the event listener can pull from this attribute
+			this.#deleteProjectModal
+				.querySelector('#delete-project__delete')
+				.setAttribute('data-id', projectId);
+
+			this.#deleteProjectModal.showModal();
+		});
+
+		makeDefaultBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			const projectId = btn.getAttribute('data-id');
+
+			em.emit('setDefault', projectId);
+
+			this.#defaultProjectId = projectId;
+		});
 	}
 
 	renderProjectsList(projects, initialBuild = false) {
@@ -275,6 +302,15 @@ export default class DisplayController {
 				);
 				defaultBtn.disabled = true;
 				defaultBtn.textContent = 'Already Default';
+				defaultBtn.title = 'This project is already the default project.';
+
+				const deleteBtn = project.querySelector(
+					'.projects__menu-item[value="delete"]'
+				);
+				deleteBtn.disabled = true;
+				deleteBtn.textContent = 'Not Removable';
+				deleteBtn.title =
+					'Cannot delete default project. Make another project the default first.';
 			}
 		});
 
@@ -469,6 +505,28 @@ export default class DisplayController {
 				this.#changeNameModal.close();
 			});
 
+		this.#deleteProjectModal
+			.querySelector('#delete-project__cancel')
+			.addEventListener('click', (e) => {
+				e.preventDefault();
+
+				this.#deleteProjectModal.close();
+			});
+
+		this.#deleteProjectModal
+			.querySelector('#delete-project__delete')
+			.addEventListener('click', (e) => {
+				e.preventDefault();
+
+				// prevents errors rebuilding header since we just deleted the selected project
+				this.selectProject('default');
+
+				const projectId = e.currentTarget.getAttribute('data-id');
+				em.emit('deleteProject', projectId);
+
+				this.#deleteProjectModal.close();
+			});
+
 		// bind event for dark mode toggle button
 		document
 			.querySelector('#header__dark-toggle')
@@ -476,12 +534,12 @@ export default class DisplayController {
 				this.toggleDarkMode();
 			});
 
-		// bind event to open modal
+		// bind event to open add todos modal
 		document.querySelector('#header__add-btn').addEventListener('click', () => {
 			this.showModal();
 		});
 
-		// bind event to close modal on cancel button click
+		// bind event to close add todos modal on cancel button click
 		document
 			.querySelector('#new-todo__cancel')
 			.addEventListener('click', () => {

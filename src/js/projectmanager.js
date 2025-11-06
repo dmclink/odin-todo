@@ -86,6 +86,9 @@ export default class ProjectManager {
 		}
 
 		this.#defaultProject = this.#projects.get(projectId);
+
+		const projects = this.listProjectNamesAndCounts();
+		em.emit('newTodoAdded', projects);
 	}
 
 	/** Gets full list of todos from every project */
@@ -158,6 +161,18 @@ export default class ProjectManager {
 			this.changeName(projectId, newName);
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+		});
+
+		em.on('deleteProject', (id) => {
+			this.remove(id);
+			const projects = this.listProjectNamesAndCounts();
+
+			em.emit('newTodoAdded', projects);
+		});
+
+		em.on('setDefault', (id) => {
+			// this function call will result in emit 'newTodoAdded' event
+			this.setDefaultProject(id);
 		});
 	}
 }
