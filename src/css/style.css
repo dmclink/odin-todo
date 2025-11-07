@@ -213,6 +213,7 @@ select {
 	width: var(--control-width);
 	stroke: var(--c6);
 	fill: var(--c6);
+	cursor: pointer;
 }
 
 .header,
@@ -543,8 +544,8 @@ dialog form {
 	text-decoration: line-through;
 }
 
-.todo-card__title {
-	font-size: 1.2rem;
+.todo-controls {
+	display: flex;
 }
 
 .todo-card__status-checkbox {
@@ -554,10 +555,44 @@ dialog form {
 	top: calc(var(--pd) * 1.5);
 }
 
-.todo-card__options {
+.todo-card__title {
+	font-size: 1.2rem;
+}
+
+.todo-card__menu-checkbox {
+	display: none;
+}
+
+.todo-card__menu-label {
+	margin-left: auto;
+	position: relative;
+	left: calc(var(--control-width) * 1.5);
+}
+
+.todo-card__menu-dropdown {
+	top: calc(var(--control-width) + 0.5rem);
 	position: absolute;
-	right: var(--pd);
-	top: calc(var(--pd) * 1.5);
+	display: none;
+	z-index: 1;
+}
+
+.todo-card__menu-item {
+	text-wrap: nowrap;
+	width: 100%;
+	text-align: left;
+	border-radius: 0;
+	border: 1px solid var(--c4);
+
+	&:first-of-type {
+		border-radius: var(--btn-radius) var(--btn-radius) 0 0;
+	}
+	&:last-of-type {
+		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
+	}
+}
+
+.todo-card:has(.todo-card__menu-checkbox:checked) .todo-card__menu-dropdown {
+	display: block;
 }
 
 /* UTILS */

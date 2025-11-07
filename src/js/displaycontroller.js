@@ -414,7 +414,8 @@ export default class DisplayController {
 							b.querySelector('.todo-card__priority').textContent
 						);
 					}
-
+					console.log(aDate, bDate);
+					console.log(aDate > bDate);
 					return aDate > bDate;
 				});
 				break;
