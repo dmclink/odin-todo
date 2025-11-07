@@ -38,6 +38,14 @@ export default class DisplayController {
 	#newProjectModal = document.getElementById('new-project');
 	#addNewProjectBtn = document.getElementById('projects__new-project');
 
+	// edit modal controls
+	#editTodoModal = document.getElementById('edit-todo');
+	#editTodoName = document.getElementById('edit-todo__name');
+	#editTodoDescription = document.getElementById('edit-todo__description');
+	#editTodoDueDate = document.getElementById('edit-todo__due-date');
+	#editTodoPriority = document.getElementById('edit-todo__priority');
+	#editTodoNotes = document.getElementById('edit-todo__notes');
+
 	// initial state for filters
 	#selectedStatusFilter = 'active';
 	#selectedSortFilter = 'due';
@@ -354,7 +362,18 @@ export default class DisplayController {
 
 		todoCard
 			.querySelector('.todo-card__menu-item[value="edit"]')
-			.addEventListener('click', () => {});
+			.addEventListener('click', () => {
+				this.#editTodoModal.setAttribute('data-id', todo.id);
+				this.#editTodoModal.setAttribute('data-project-id', todo.projectId);
+
+				this.#editTodoName.value = todo.title;
+				this.#editTodoDescription.value = todo.description;
+				this.#editTodoDueDate.value = todo.dueDate;
+				this.#editTodoPriority.value = todo.priority;
+				this.#editTodoNotes.value = todo.notes;
+
+				this.#editTodoModal.showModal();
+			});
 
 		todoCard
 			.querySelector('.todo-card__menu-item[value="delete"]')
@@ -624,6 +643,32 @@ export default class DisplayController {
 
 				em.emit('newProject', newName);
 				this.#newProjectModal.close();
+			});
+
+		this.#editTodoModal
+			.querySelector('#edit-todo__cancel')
+			.addEventListener('click', () => {
+				this.#editTodoModal.close();
+			});
+
+		this.#editTodoModal
+			.querySelector('#edit-todo__edit')
+			.addEventListener('click', () => {
+				this.#editTodoModal.close();
+
+				const todoId = this.#editTodoModal.getAttribute('data-id');
+				const projectId = this.#editTodoModal.getAttribute('data-project-id');
+
+				em.emit(
+					'editTodo',
+					projectId,
+					todoId,
+					this.#editTodoName.value,
+					this.#editTodoDescription.value,
+					this.#editTodoDueDate.value,
+					this.#editTodoPriority.value,
+					this.#editTodoNotes.value
+				);
 			});
 
 		em.on('todosUpdated', this.buildTodos.bind(this));

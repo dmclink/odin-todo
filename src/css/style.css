@@ -592,7 +592,8 @@ dialog form {
 	}
 }
 
-.todo-card:has(.todo-card__menu-checkbox:checked) .todo-card__menu-dropdown {
+.todo-card__menu-label:hover .todo-card__menu-dropdown,
+.todo-card__menu-label:focus-within .todo-card__menu-dropdown {
 	display: block;
 }
 

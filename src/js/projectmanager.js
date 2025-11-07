@@ -190,5 +190,21 @@ export default class ProjectManager {
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
 		});
+
+		em.on(
+			'editTodo',
+			(projectId, todoId, title, description, dueDate, priority, notes) => {
+				const todo = this.getProject(projectId).getTodo(todoId);
+
+				todo.title = title;
+				todo.description = description;
+				todo.dueDate = dueDate;
+				todo.priority = priority;
+				todo.notes = notes;
+
+				const todos = this.getAllTodos();
+				em.emit('todosUpdated', todos);
+			}
+		);
 	}
 }

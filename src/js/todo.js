@@ -87,9 +87,6 @@ export default class ToDo {
 	}
 
 	set dueDate(newDueDate) {
-		if (newDueDate !== null && !(newDueDate instanceof Date)) {
-			throw new TypeError('dueDate must be Date');
-		}
 		this.#dueDate = newDueDate;
 	}
 	get dueDate() {

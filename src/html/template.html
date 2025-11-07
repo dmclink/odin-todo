@@ -17,6 +17,7 @@
     </div>
 
     <ul class="projects__list" id="projects__list">
+      <!-- individual project buttons will be generated via js-->
       <template id="projects__li-template">
         <li class="projects__li">
           <div class="projects__btn">
@@ -49,8 +50,6 @@
           </div>
         </li>
       </template>
-
-      <!-- individual project buttons will be generated via js-->
     </ul>
   </aside>
 
@@ -72,6 +71,47 @@
   </header>
 
   <main class="main">
+    <!-- modal for editing existing todo, spawns when pressing the edit todo button on any todo
+    js fills in the fields with the current values. data id attributes will be overwritten 
+    via js from the todo that had its edit button clicked -->
+    <dialog class="edit-todo" id="edit-todo" data-id="" data-project-id="">
+      <h2 class="edit-todo__title">Edit ToDo</h2>
+
+      <form class="edit-todo__form" id="edit-todo__form">
+        <label for="edit-todo__name">
+          <div class="required-label">Name:<span class="required-text"> *required</span></div>
+          <input class="form-control" type="text" name="name" id="edit-todo__name" required>
+        </label>
+
+        <label for="edit-todo__description">Description:
+          <input class="form-control" type="text" name="description" id="edit-todo__description">
+        </label>
+
+        <label for="edit-todo__due-date">Due Date:
+          <input type="date" name="due-date" id="edit-todo__due-date">
+        </label>
+
+        <label for="edit-todo__priority">Priority:
+          <select class="form-control" name="priority" id="edit-todo__priority">
+            <option value="" selected>N/A</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </label>
+
+        <label for="edit-todo__notes">Notes:
+          <textarea class="form-control" name="notes" class="edit-todo__notes" id="edit-todo__notes"
+            rows="6"></textarea>
+        </label>
+
+        <div class="dialog-btn-controls">
+          <button type="button" class="button edit-todo__btn edit-todo__cancel" id="edit-todo__cancel">Cancel</button>
+          <button type="button" class="button edit-todo__btn edit-todo__edit" id="edit-todo__edit">Edit</button>
+        </div>
+      </form>
+    </dialog>
+
     <!-- modal for adding new project -->
     <dialog class="new-project" id="new-project">
       <h2 class="new-project__title">Add New Project</h2>
