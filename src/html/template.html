@@ -204,6 +204,7 @@
       </div>
 
       <div class="container todos" id="todos">
+        <!-- todos will be generated here via js -->
         <template id="todo-card-template">
           <div class="todo-card">
             <!-- todo controls -->
@@ -225,12 +226,12 @@
                   </g>
                 </svg>
                 <div class="todo-card__menu-dropdown">
-                  <button type="button" class="button todo-card__menu-item" value="name">Edit Todo</button>
+                  <button type="button" class="button todo-card__menu-item" value="edit">Edit Todo</button>
                   <button type="button" class="button todo-card__menu-item" value="delete">Delete</button>
                 </div>
               </label>
-
             </div>
+
             <p class="todo-card__due-date"></p>
             <p class="todo-card__priority"></p>
             <p class="todo-card__description"></p>
@@ -238,7 +239,6 @@
             <p class="todo-card__notes"></p>
           </div>
         </template>
-        <!-- todos will be generated here via js -->
       </div>
     </div>
   </main>

@@ -571,6 +571,7 @@ dialog form {
 
 .todo-card__menu-dropdown {
 	top: calc(var(--control-width) + 0.5rem);
+	right: 0;
 	position: absolute;
 	display: none;
 	z-index: 1;

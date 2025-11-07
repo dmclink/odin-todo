@@ -328,10 +328,11 @@ export default class DisplayController {
 	 * @returns {HTMLElement} - the built todo-card element
 	 */
 	createTodoCard(todo) {
-		const todoCard = this.#todoCardTemplate.content.cloneNode(true);
-		todoCard.firstElementChild.setAttribute('data-id', todo.id);
-		todoCard.firstElementChild.setAttribute('data-created', todo.created);
-		todoCard.firstElementChild.setAttribute('data-project-id', todo.projectId);
+		const todoCard =
+			this.#todoCardTemplate.content.cloneNode(true).firstElementChild;
+		todoCard.setAttribute('data-id', todo.id);
+		todoCard.setAttribute('data-created', todo.created);
+		todoCard.setAttribute('data-project-id', todo.projectId);
 
 		if (todo.complete) {
 			todoCard.querySelector('.todo-card__status-checkbox').checked = true;
@@ -350,6 +351,20 @@ export default class DisplayController {
 		todoCard.querySelector('.todo-card__description').textContent =
 			todo.description;
 		todoCard.querySelector('.todo-card__notes').textContent = todo.notes;
+
+		todoCard
+			.querySelector('.todo-card__menu-item[value="edit"]')
+			.addEventListener('click', () => {});
+
+		todoCard
+			.querySelector('.todo-card__menu-item[value="delete"]')
+			.addEventListener('click', () => {
+				const todoId = todoCard.getAttribute('data-id');
+				const projectId = todoCard.getAttribute('data-project-id');
+
+				em.emit('deleteTodo', projectId, todoId);
+				todoCard.remove();
+			});
 
 		return todoCard;
 	}

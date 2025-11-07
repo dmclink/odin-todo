@@ -183,5 +183,12 @@ export default class ProjectManager {
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
 		});
+
+		em.on('deleteTodo', (projectId, todoId) => {
+			this.getProject(projectId).remove(todoId);
+
+			const projects = this.listProjectNamesAndCounts();
+			em.emit('newTodoAdded', projects);
+		});
 	}
 }
