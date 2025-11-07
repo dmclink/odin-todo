@@ -40,8 +40,7 @@ export default class Project {
 		}
 
 		const [removedTodo] = this.#todos.splice(idx, 1);
-
-		if (!removedTodo.completed) {
+		if (!removedTodo.complete) {
 			this.#count--;
 		}
 	}
