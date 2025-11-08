@@ -169,6 +169,8 @@ export default class ProjectManager {
 
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+			const todos = this.getAllTodos();
+			em.emit('todosUpdated', todos);
 		});
 
 		em.on('setDefault', (id) => {
