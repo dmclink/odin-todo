@@ -2,13 +2,6 @@ import '../css/style.css';
 import ProjectManager from './projectmanager.js';
 import DisplayController from './displaycontroller.js';
 
-// DELETE:
-import Project from './project.js';
-import ToDo from './todo.js';
-window.ProjectManager = ProjectManager;
-window.Project = Project;
-window.ToDo = ToDo;
-
 document.addEventListener('DOMContentLoaded', () => {
 	const pm = new ProjectManager();
 	pm.bindEvents();
@@ -21,10 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (window.matchMedia('(prefers-color-scheme: dark').matches) {
 		dc.toggleDarkMode();
 	}
-
-	// DELETE: attaching to window so we can test in command line
-	window.pm = pm;
-	window.dc = dc;
 
 	// initially populate projects list
 	const projects = pm.listProjectNamesAndCounts();
