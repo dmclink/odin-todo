@@ -26,7 +26,7 @@ export default class DisplayController {
 	#htmlEl = document.querySelector('html');
 	#newToDoModal = document.querySelector('#new-todo');
 	#newToDoForm = document.querySelector('#new-todo__form');
-	#headerTitle = document.querySelector('#header__title');
+	#headerTitle = document.getElementById('header__title');
 	#headerCount = document.querySelector('#header__active-todos');
 	#statusFilterBtns = document.querySelectorAll('.filter__button');
 	#sortFilterSelectEl = document.querySelector('#filter__todo-select');
@@ -37,6 +37,7 @@ export default class DisplayController {
 	#deleteProjectModal = document.getElementById('delete-project');
 	#newProjectModal = document.getElementById('new-project');
 	#addNewProjectBtn = document.getElementById('projects__new-project');
+	#projectsCheckbox = document.getElementById('projects__checkbox');
 
 	// edit modal controls
 	#editTodoModal = document.getElementById('edit-todo');
@@ -666,6 +667,12 @@ export default class DisplayController {
 					this.#editTodoNotes.value
 				);
 			});
+
+		// toggle projects sidebar checkbox with header click for mobile devices
+		// will hide/unhide the sidebar via css
+		this.#headerTitle.addEventListener('click', () => {
+			this.#projectsCheckbox.checked = !this.#projectsCheckbox.checked;
+		});
 
 		em.on('todosUpdated', this.buildTodos.bind(this));
 

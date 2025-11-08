@@ -4,15 +4,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>ToDos</title>
 </head>
 
 <body class="body" id="body">
+  <!-- modal for adding new project -->
+  <dialog class="new-project" id="new-project">
+    <h2 class="new-project__title">Add New Project</h2>
+
+    <form>
+      <label class="new-project__label required-label" for="new-project__name">
+        <div class="required-label">Name:<span class="required-text"> *required</span></div>
+        <input type="text" class="new-project__name" id="new-project__name">
+      </label>
+
+      <div class="dialog-btn-controls">
+        <button type="button" class="button new-project__btn new-project__cancel"
+          id="new-project__cancel">Cancel</button>
+        <button type="button" class="button new-project__btn new-project__add" id="new-project__add">Add</button>
+      </div>
+    </form>
+  </dialog>
+
   <aside class="projects">
     <div class="projects__header-block">
-      <h1 class="projects__title">
-        Projects
-      </h1>
+      <label for="projects__checkbox">
+        <input class="projects__checkbox" type="checkbox" id="projects__checkbox">
+        <h1 class="projects__title">
+          Projects
+        </h1>
+      </label>
       <button class="button projects__new-project" id="projects__new-project">+</button>
     </div>
 
@@ -108,24 +129,6 @@
         <div class="dialog-btn-controls">
           <button type="button" class="button edit-todo__btn edit-todo__cancel" id="edit-todo__cancel">Cancel</button>
           <button type="button" class="button edit-todo__btn edit-todo__edit" id="edit-todo__edit">Edit</button>
-        </div>
-      </form>
-    </dialog>
-
-    <!-- modal for adding new project -->
-    <dialog class="new-project" id="new-project">
-      <h2 class="new-project__title">Add New Project</h2>
-
-      <form>
-        <label class="new-project__label required-label" for="new-project__name">
-          <div class="required-label">Name:<span class="required-text"> *required</span></div>
-          <input type="text" class="new-project__name" id="new-project__name">
-        </label>
-
-        <div class="dialog-btn-controls">
-          <button type="button" class="button new-project__btn new-project__cancel"
-            id="new-project__cancel">Cancel</button>
-          <button type="button" class="button new-project__btn new-project__add" id="new-project__add">Add</button>
         </div>
       </form>
     </dialog>
@@ -276,7 +279,7 @@
               <p class="todo-card__priority"></p>
             </div>
             <p class="todo-card__description"></p>
-            <div class="todo-card__notes"></div>
+            <pre><div class="todo-card__notes"></div></pre>
           </div>
         </template>
       </div>
