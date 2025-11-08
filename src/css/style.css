@@ -134,10 +134,12 @@ summary {
 	--c6: #a9b2ba;
 	--c7: #a9b2ba5e;
 	--projects-hover-color: var(--c7);
-	--projects-selected-color: var(--c6);
+	--projects-selected-color: var(--c1);
 	--btn-radius: 7px;
 	--btn-bgc: var(--c6);
 	--btn-color: var(--c5);
+	--menu-item-bgc: var(--c2);
+	--menu-item-color: var(--c5);
 	--search-icon-color: var(--c5);
 	--todo-card-border: 1px solid var(--c4);
 	--control-width: 20px;
@@ -155,6 +157,8 @@ html.dark {
 	--projects-selected-color: var(--c4);
 	--btn-bgc: var(--c5);
 	--btn-color: var(--c1);
+	--menu-item-bgc: var(--c2);
+	--menu-item-color: var(--c5);
 	--search-icon-color: var(--c6);
 	--todo-card-border: none;
 }
@@ -211,8 +215,8 @@ select {
 
 .dot-controls {
 	width: var(--control-width);
-	stroke: var(--c6);
-	fill: var(--c6);
+	stroke: var(--c5);
+	fill: var(--c5);
 	cursor: pointer;
 }
 
@@ -324,7 +328,7 @@ dialog form {
 	padding: 0.5rem 0.7rem;
 	font-size: 1.5rem;
 	font-weight: bold;
-	background-color: var(--c5);
+	background-color: var(--btn-bgc);
 }
 
 .projects__list {
@@ -339,13 +343,21 @@ dialog form {
 	border-radius: 10px;
 	overflow: hidden;
 
-	:hover {
+	&:hover {
 		background-color: var(--projects-hover-color);
 	}
 
 	&:has(> .projects__btn[aria-selected]) {
 		background-color: var(--projects-selected-color);
 	}
+
+	&:has([aria-selected]) {
+		border: 1px solid var(--c4);
+	}
+}
+
+.projects__li * {
+	border-radius: calc(var(--btn-radius) + 2px);
 }
 
 .projects__btn {
@@ -401,10 +413,17 @@ dialog form {
 	width: 100%;
 	text-align: left;
 	border-radius: 0;
-	border: 1px solid var(--c4);
+	border-top: 1px solid var(--c4);
+	background-color: var(--menu-item-bgc);
+	color: var(--menu-item-color);
 
 	&:last-of-type {
 		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
+	}
+
+	&[disabled] {
+		filter: brightness(0.6);
+		cursor: not-allowed;
 	}
 }
 
@@ -540,7 +559,7 @@ dialog form {
 	}
 }
 
-.todo-card:has(> .todo-card__status-checkbox:checked) > .todo-card__title {
+.todo-card:has(.todo-card__status-checkbox:checked) .todo-card__title {
 	text-decoration: line-through;
 }
 
@@ -575,6 +594,9 @@ dialog form {
 	position: absolute;
 	display: none;
 	z-index: 1;
+	border: 1px solid var(--c4);
+	border-radius: var(--btn-radius);
+	overflow: hidden;
 }
 
 .todo-card__menu-item {
@@ -582,13 +604,11 @@ dialog form {
 	width: 100%;
 	text-align: left;
 	border-radius: 0;
-	border: 1px solid var(--c4);
+	background-color: var(--menu-item-bgc);
+	color: var(--menu-item-color);
 
 	&:first-of-type {
-		border-radius: var(--btn-radius) var(--btn-radius) 0 0;
-	}
-	&:last-of-type {
-		border-radius: 0 0 var(--btn-radius) var(--btn-radius);
+		border-bottom: 1px solid var(--c4);
 	}
 }
 
