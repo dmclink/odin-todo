@@ -36,6 +36,7 @@ export default class DisplayController {
 	#changeNameModal = document.getElementById('change-name');
 	#deleteProjectModal = document.getElementById('delete-project');
 	#newProjectModal = document.getElementById('new-project');
+	#newProjectModalAddBtn = document.getElementById('new-project__add');
 	#addNewProjectBtn = document.getElementById('projects__new-project');
 	#projectsCheckbox = document.getElementById('projects__checkbox');
 
@@ -641,22 +642,31 @@ export default class DisplayController {
 				this.#newProjectModal.close();
 			});
 
+		this.#newProjectModalAddBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			const nameInput =
+				this.#newProjectModal.querySelector('#new-project__name');
+			const newName = nameInput.value;
+			if (!newName) {
+				nameInput.setCustomValidity('Name is required');
+				nameInput.reportValidity();
+				return;
+			}
+
+			em.emit('newProject', newName);
+			this.#newProjectModal.close();
+		});
+
+		// pressing enter with this form open tries to submit by default
 		this.#newProjectModal
-			.querySelector('#new-project__add')
-			.addEventListener('click', (e) => {
-				e.preventDefault();
+			.querySelector('#new-project__name')
+			.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter') {
+					e.preventDefault();
 
-				const nameInput =
-					this.#newProjectModal.querySelector('#new-project__name');
-				const newName = nameInput.value;
-				if (!newName) {
-					nameInput.setCustomValidity('Name is required');
-					nameInput.reportValidity();
-					return;
+					this.#newProjectModalAddBtn.click();
 				}
-
-				em.emit('newProject', newName);
-				this.#newProjectModal.close();
 			});
 
 		this.#editTodoModal
