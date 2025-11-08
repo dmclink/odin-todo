@@ -14,23 +14,27 @@ const Priority = Object.freeze({
  * @param {string} notes - any additional notes for the todo
  */
 export default class ToDo {
-	#id;
 	#projectId;
 	#title;
 	#description;
 	#dueDate;
 	#priority;
 	#notes;
+
+	#id;
 	#complete;
 	#created;
 
 	constructor(
 		projectId,
 		title,
-		description = '',
-		dueDate = '',
-		priority = '',
-		notes = ''
+		description,
+		dueDate,
+		priority,
+		notes,
+		id,
+		complete,
+		created
 	) {
 		if (!title) {
 			throw Error('title must not be empty');
@@ -43,15 +47,16 @@ export default class ToDo {
 			);
 		}
 
-		this.#id = crypto.randomUUID();
 		this.#projectId = projectId;
 		this.#title = title;
 		this.#description = description;
 		this.#dueDate = dueDate;
 		this.#priority = priorityLower;
 		this.#notes = notes;
-		this.#complete = false;
-		this.#created = new Date();
+
+		this.#id = id ? id : crypto.randomUUID();
+		this.#complete = complete ? complete : false;
+		this.#created = created ? created : new Date();
 	}
 
 	get id() {
@@ -116,16 +121,18 @@ export default class ToDo {
 		return this.#notes;
 	}
 
-	/** Creates an object that is a copy of all properties including private for reading */
-	read() {
+	toJSON() {
 		return {
-			id: this.#id,
+			objectType: 'ToDo',
+			projectId: this.#projectId,
 			title: this.#title,
 			description: this.#description,
 			dueDate: this.#dueDate,
 			priority: this.#priority,
 			notes: this.#notes,
+			id: this.#id,
 			complete: this.#complete,
+			created: this.#created,
 		};
 	}
 

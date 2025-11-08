@@ -6,15 +6,15 @@ export default class Project {
 	#id;
 	#count;
 
-	constructor(name) {
+	constructor(name, todos, id, count) {
 		if (typeof name !== 'string') {
 			throw new Error('Name must be string');
 		}
 
 		this.#name = name;
-		this.#todos = [];
-		this.#id = crypto.randomUUID();
-		this.#count = 0;
+		this.#todos = todos ? todos : [];
+		this.#id = id ? id : crypto.randomUUID();
+		this.#count = count ? count : 0;
 	}
 
 	/** Adds new todo to this project's list
@@ -99,5 +99,15 @@ export default class Project {
 
 	getTodos() {
 		return [...this.#todos];
+	}
+
+	toJSON() {
+		return {
+			objectType: 'Project',
+			name: this.#name,
+			id: this.#id,
+			count: this.#count,
+			todos: this.#todos,
+		};
 	}
 }

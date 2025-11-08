@@ -1,19 +1,24 @@
 import Project from './project.js';
 import ToDo from './todo.js';
-import em from '../js/events.js';
+import em from './events.js';
 
 export default class ProjectManager {
 	#projects;
 	#defaultProject;
 
-	constructor() {
+	constructor(projects, defaultProject) {
 		const defaultName = 'Todos';
-		const newDefaultProject = new Project(defaultName);
-		const newDefaultId = newDefaultProject.id;
-		this.#defaultProject = newDefaultProject;
-		this.#projects = new Map();
 
-		this.#projects.set(newDefaultId, newDefaultProject);
+		this.#projects = projects ? projects : new Map();
+
+		if (!defaultProject) {
+			const newDefaultProject = new Project(defaultName);
+			const newDefaultId = newDefaultProject.id;
+			this.#defaultProject = newDefaultProject;
+			this.#projects.set(newDefaultId, newDefaultProject);
+		} else {
+			this.#defaultProject = defaultProject;
+		}
 	}
 
 	addProject(name) {
@@ -127,6 +132,21 @@ export default class ProjectManager {
 		return todos;
 	}
 
+	toJSON() {
+		return {
+			objectType: 'ProjectManager',
+			projects: Array.from(this.#projects.entries()),
+			defaultProject: this.#defaultProject.id,
+		};
+	}
+
+	init() {
+		const projects = this.listProjectNamesAndCounts();
+		em.emit('newTodoAdded', projects);
+		const todos = this.getAllTodos();
+		em.emit('todosUpdated', todos);
+	}
+
 	bindEvents() {
 		// when a user clicks the add todo button in the add todo modal
 		em.on('addTodo', (projectId, formData) => {
@@ -147,14 +167,15 @@ export default class ProjectManager {
 
 			em.emit('todosUpdated', todos);
 			em.emit('newTodoAdded', projects);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		// emits whenever a todo's status checkbox is clicked
 		em.on('changeTodoStatus', (projectId, todoId) => {
 			this.getProject(projectId).toggleComplete(todoId);
-
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		em.on('changeName', (projectId, newName) => {
@@ -162,6 +183,7 @@ export default class ProjectManager {
 
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		em.on('deleteProject', (id) => {
@@ -171,6 +193,7 @@ export default class ProjectManager {
 			em.emit('newTodoAdded', projects);
 			const todos = this.getAllTodos();
 			em.emit('todosUpdated', todos);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		em.on('setDefault', (id) => {
@@ -184,6 +207,7 @@ export default class ProjectManager {
 
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		em.on('deleteTodo', (projectId, todoId) => {
@@ -191,6 +215,7 @@ export default class ProjectManager {
 
 			const projects = this.listProjectNamesAndCounts();
 			em.emit('newTodoAdded', projects);
+			em.emit('updateStore', JSON.stringify(this));
 		});
 
 		em.on(
@@ -206,6 +231,7 @@ export default class ProjectManager {
 
 				const todos = this.getAllTodos();
 				em.emit('todosUpdated', todos);
+				em.emit('updateStore', JSON.stringify(this));
 			}
 		);
 	}

@@ -1,4 +1,4 @@
-import em from '../js/events.js';
+import em from './events.js';
 import folderIconSvg from '../img/folder-icon.svg';
 import darkIconSvg from '../img/dark-mode-icon.svg';
 import lightIconSvg from '../img/light-mode-icon.svg';
@@ -518,7 +518,7 @@ export default class DisplayController {
 	}
 
 	bindEvents() {
-		document.querySelector('#new-todo__add').addEventListener('click', () => {
+		document.querySelector('#new-todo__add').addEventListener('click', (e) => {
 			const formData = this.getFormData();
 			// check required name field has a value
 			if (!formData.get('name')) {
