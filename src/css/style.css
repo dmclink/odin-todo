@@ -133,6 +133,7 @@ summary {
 	--c5: #1a202c;
 	--c6: #a9b2ba;
 	--c7: #a9b2ba5e;
+	--hdr-height: 5rem;
 	--projects-hover-color: var(--c7);
 	--projects-selected-color: var(--c1);
 	--btn-radius: 7px;
@@ -173,7 +174,7 @@ html.dark {
 		'aside main';
 
 	grid-template-columns: clamp(16rem, 20%, 22rem) 1fr;
-	grid-template-rows: 5rem 1fr;
+	grid-template-rows: var(--hdr-height) 1fr;
 
 	height: 100vh;
 }
@@ -318,6 +319,7 @@ dialog form {
 	align-items: center;
 	border-bottom: 1px solid var(--c4);
 	padding: 1rem;
+	height: calc(var(--hdr-height) - 1px);
 }
 
 .projects__title {
@@ -432,6 +434,7 @@ dialog form {
 	display: flex;
 	justify-content: space-between;
 	padding: 0.5rem 1rem;
+	border-left: none;
 }
 
 .header__info {
@@ -554,13 +557,13 @@ dialog form {
 	position: relative;
 	border: var(--todo-card-border);
 
-	&:has(> .todo-card__status-checkbox:checked) {
+	&:has(.todo-card__status-checkbox:checked) {
 		filter: brightness(0.8);
-	}
-}
 
-.todo-card:has(.todo-card__status-checkbox:checked) .todo-card__title {
-	text-decoration: line-through;
+		& .todo-card__title {
+			text-decoration: line-through;
+		}
+	}
 }
 
 .todo-controls {
@@ -615,6 +618,26 @@ dialog form {
 .todo-card__menu-label:hover .todo-card__menu-dropdown,
 .todo-card__menu-label:focus-within .todo-card__menu-dropdown {
 	display: block;
+}
+
+.todo-card__priority-container {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+.todo-card__notes {
+	padding-left: 1rem;
+	position: relative;
+	&::before {
+		content: '';
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		left: 0;
+		background-color: var(--c4);
+		position: absolute;
+	}
 }
 
 /* UTILS */
