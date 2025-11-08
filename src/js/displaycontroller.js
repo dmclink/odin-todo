@@ -222,9 +222,7 @@ export default class DisplayController {
 	}
 
 	bindProjectButtonMenuListeners(liElement) {
-		console.log(liElement);
 		const btn = liElement.querySelector('.projects__btn');
-		console.log(btn);
 		const changeNameBtn = liElement.querySelector(
 			'.projects__menu-item[value="name"]'
 		);
@@ -295,7 +293,7 @@ export default class DisplayController {
 		// let the 'All Projects' entry have a special icon
 		const allProjectsBtn = this.#projectsList.firstElementChild;
 		allProjectsBtn.querySelector('.projects__icon').src = folderIconSvg;
-		console.log(allProjectsBtn.querySelector('.projects__menu'));
+
 		// allProjectsBtn.querySelector('.projects__menu').style.visibilty = 'hidden';
 		allProjectsBtn.querySelector('.projects__menu-checkbox').disabled = true;
 
@@ -448,8 +446,6 @@ export default class DisplayController {
 							b.querySelector('.todo-card__priority').textContent
 						);
 					}
-					console.log(aDate, bDate);
-					console.log(aDate > bDate);
 					return aDate > bDate;
 				});
 				break;
@@ -669,9 +665,6 @@ export default class DisplayController {
 					this.#editTodoPriority.value,
 					this.#editTodoNotes.value
 				);
-				console.log(this.#editTodoNotes.value);
-				console.log(this.#editTodoNotes.nodeValue);
-				console.log(this.#editTodoNotes.textContent);
 			});
 
 		em.on('todosUpdated', this.buildTodos.bind(this));
