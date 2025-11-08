@@ -145,6 +145,7 @@ export default class DisplayController {
 		this.#selectedProject = id;
 
 		this.updateHeader();
+		this.filterDisplayedTodos();
 	}
 
 	// turns dark mode on or off and swaps the toggle icon
@@ -387,43 +388,59 @@ export default class DisplayController {
 		return todoCard;
 	}
 
-	/** Removes hidden class from a todo if it passes both status and search filter checks.
+	statusFilterCheck(todo) {
+		if (this.statusFilter === 'all') {
+			return true;
+		}
+
+		const todoIsComplete = todo.querySelector(
+			'.todo-card__status-checkbox'
+		).checked;
+		const statusFilterComplete = this.statusFilter === 'complete';
+
+		return todoIsComplete === statusFilterComplete;
+	}
+
+	searchFilterCheck(todo) {
+		if (!this.searchFilter) {
+			return true;
+		}
+
+		const title = todo.querySelector('.todo-card__title').textContent;
+		const description = todo.querySelector(
+			'.todo-card__description'
+		).textContent;
+		const notes = todo.querySelector('.todo-card__notes').textContent;
+
+		if (
+			title.includes(this.searchFilter) ||
+			description.includes(this.searchFilter) ||
+			notes.includes(this.searchFilter)
+		) {
+			return true;
+		}
+
+		return false;
+	}
+
+	selectedProjectCheck(todo) {
+		if (this.#selectedProject === 'default') {
+			return true;
+		}
+
+		return todo.getAttribute('data-project-id') === this.#selectedProject;
+	}
+
+	/** Removes hidden class from a todo if it passes, status, search, and project filter checks.
 	 * Assumes hidden class has been applied todo element already.
 	 * @param {HTMLElement} todo - the todo element to filter
 	 */
 	filterTodo(todo) {
-		let containsStatus = false;
-		if (this.statusFilter === 'all') {
-			containsStatus = true;
-		} else {
-			const todoIsComplete = todo.querySelector(
-				'.todo-card__status-checkbox'
-			).checked;
-			const statusFilterComplete = this.statusFilter === 'complete';
+		const containsStatus = this.statusFilterCheck(todo);
+		const containsSearch = this.searchFilterCheck(todo);
+		const isInSelectedProject = this.selectedProjectCheck(todo);
 
-			containsStatus = todoIsComplete === statusFilterComplete;
-		}
-
-		let containsSearch = false;
-		if (!this.searchFilter) {
-			containsSearch = true;
-		} else {
-			const title = todo.querySelector('.todo-card__title').textContent;
-			const description = todo.querySelector(
-				'.todo-card__description'
-			).textContent;
-			const notes = todo.querySelector('.todo-card__notes').textContent;
-
-			if (
-				title.includes(this.searchFilter) ||
-				description.includes(this.searchFilter) ||
-				notes.includes(this.searchFilter)
-			) {
-				containsSearch = true;
-			}
-		}
-
-		if (containsSearch && containsStatus) {
+		if (containsSearch && containsStatus && isInSelectedProject) {
 			todo.classList.remove('hidden');
 		}
 	}
