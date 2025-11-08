@@ -669,6 +669,9 @@ export default class DisplayController {
 					this.#editTodoPriority.value,
 					this.#editTodoNotes.value
 				);
+				console.log(this.#editTodoNotes.value);
+				console.log(this.#editTodoNotes.nodeValue);
+				console.log(this.#editTodoNotes.textContent);
 			});
 
 		em.on('todosUpdated', this.buildTodos.bind(this));
